@@ -12,6 +12,8 @@ export default async function DocsLayout({
       navbar={<SiteNavbar />}
       footer={<Footer />}
       pageMap={await getPageMap()}
+      darkMode={false}
+      navigation={false}
       editLink={null}
       feedback={{ content: null }}
     >
