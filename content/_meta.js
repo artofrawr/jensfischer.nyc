@@ -5,5 +5,9 @@ export default {
     theme: {
       layout: 'full'
     }
+  },
+  docs: {
+    title: 'Documentation',
+    type: 'page'
   }
 }
