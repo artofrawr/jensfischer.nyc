@@ -6,8 +6,8 @@ export default {
       layout: 'full'
     }
   },
-  docs: {
-    title: 'Documentation',
+  garden: {
+    title: 'Digital Garden',
     type: 'page'
   }
 }
