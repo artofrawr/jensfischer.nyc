@@ -5,8 +5,8 @@ node_modules/
 .next/
 out/
 
-# pagefind search index (generated at build)
-public/_pagefind/
+# fumadocs generated source
+.source/
 
 # build
 dist/
