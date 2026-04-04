@@ -2,7 +2,7 @@
   "pages": [
     "index",
     "---Tech---",
-    "awesome-list",
+    "tech/awesome-list",
     "tech/claude",
     "---Miscellaneous---",
     "misc/chess"
