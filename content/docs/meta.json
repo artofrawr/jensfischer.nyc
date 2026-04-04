@@ -1,13 +1,10 @@
 {
   "pages": [
     "index",
-    "getting-started",
-    "guides",
-    "awesome-list",
     "---Tech---",
-    "claude",
-    "---Business---",
+    "awesome-list",
+    "tech/claude",
     "---Miscellaneous---",
-    "chess"
+    "misc/chess"
   ]
 }

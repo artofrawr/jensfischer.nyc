@@ -47,7 +47,7 @@ function SiteHeaderNav({ className, children }: React.ComponentProps<"nav">) {
   return (
     <nav
       data-slot="site-header-nav"
-      className={cn("hidden items-center gap-1 md:flex", className)}
+      className={cn("ml-auto hidden items-center gap-1 md:flex", className)}
     >
       {children}
     </nav>
@@ -91,7 +91,7 @@ function SiteHeaderActions({
   return (
     <div
       data-slot="site-header-actions"
-      className={cn("ml-auto flex items-center gap-1", className)}
+      className={cn("flex items-center gap-1", className)}
     >
       {children}
     </div>

@@ -1,7 +1,20 @@
+import { Fragment } from "react"
+import Link from "next/link"
 import { notFound } from "next/navigation"
 import { mdxComponents } from "@/mdx-components"
+import { findNeighbour } from "fumadocs-core/page-tree"
+import { getBreadcrumbItems } from "fumadocs-core/breadcrumb"
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
 import { source } from "@/lib/source"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 import { DocsContent } from "@/components/docs-content"
 
 export const revalidate = false
@@ -39,13 +52,44 @@ export default async function Page(props: {
 
   const doc = page.data
   const MDX = doc.body
+  const neighbours = findNeighbour(source.pageTree, page.url)
+  const breadcrumbs = getBreadcrumbItems(page.url, source.pageTree, {
+    includePage: true,
+  })
 
   return (
     <DocsContent toc={doc.toc}>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink render={<Link href="/docs" />}>
+              Documentation
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          {breadcrumbs.map((item, index) => {
+            const isLast = index === breadcrumbs.length - 1
+            return (
+              <Fragment key={index}>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  {isLast ? (
+                    <BreadcrumbPage>{item.name}</BreadcrumbPage>
+                  ) : (
+                    <BreadcrumbLink
+                      render={<Link href={item.url ?? "/docs"} />}
+                    >
+                      {item.name}
+                    </BreadcrumbLink>
+                  )}
+                </BreadcrumbItem>
+              </Fragment>
+            )
+          })}
+        </BreadcrumbList>
+      </Breadcrumb>
+
       <div className="flex flex-col gap-2">
-        <h1 className="text-[28px] font-bold leading-tight tracking-tight text-foreground">
-          {doc.title}
-        </h1>
+        <h1 className="text-[28px] font-bold text-foreground">{doc.title}</h1>
         {doc.description && (
           <p className="text-base leading-relaxed text-muted-foreground">
             {doc.description}
@@ -57,6 +101,28 @@ export default async function Page(props: {
 
       <div className="prose-doc">
         <MDX components={mdxComponents} />
+      </div>
+
+      {/* Prev / Next navigation */}
+      <div className="mt-12 flex items-center gap-2 border-t border-border pt-6">
+        {neighbours.previous && (
+          <Link
+            href={neighbours.previous.url}
+            className="inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            <ChevronLeftIcon className="size-3.5" />
+            {neighbours.previous.name}
+          </Link>
+        )}
+        {neighbours.next && (
+          <Link
+            href={neighbours.next.url}
+            className="ml-auto inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            {neighbours.next.name}
+            <ChevronRightIcon className="size-3.5" />
+          </Link>
+        )}
       </div>
     </DocsContent>
   )

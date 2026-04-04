@@ -80,7 +80,7 @@ function TreeNode({ node }: { node: PageTreeNode }) {
   return null
 }
 
-function PageLink({ page, nested }: { page: PageNode; nested?: boolean }) {
+function PageLink({ page }: { page: PageNode }) {
   const pathname = usePathname()
   const isActive = page.url === pathname
 
@@ -92,7 +92,6 @@ function PageLink({ page, nested }: { page: PageNode; nested?: boolean }) {
         isActive
           ? "bg-primary/10 font-medium text-primary"
           : "text-muted-foreground hover:bg-accent hover:text-foreground",
-        nested && "ms-2",
       )}
     >
       {page.name as string}
@@ -100,7 +99,7 @@ function PageLink({ page, nested }: { page: PageNode; nested?: boolean }) {
   )
 }
 
-function Folder({ folder }: { folder: FolderNode }) {
+function Folder({ folder, nested }: { folder: FolderNode; nested?: boolean }) {
   const pathname = usePathname()
   const containsActive = folderContainsPath(folder, pathname)
   const [open, setOpen] = React.useState(containsActive)
@@ -116,10 +115,9 @@ function Folder({ folder }: { folder: FolderNode }) {
       <button
         onClick={() => setOpen((prev) => !prev)}
         className={cn(
-          "mt-5 flex w-full items-center justify-between py-1 text-[13px] font-semibold transition-colors first:mt-0",
-          containsActive
-            ? "text-foreground"
-            : "text-foreground/80 hover:text-foreground",
+          "flex w-full items-center justify-between rounded-md px-2 py-1.5 text-[13px] leading-normal transition-colors",
+          !nested && "mt-5 first:mt-0",
+          "text-muted-foreground hover:bg-accent hover:text-foreground",
         )}
       >
         {folder.name as string}
@@ -138,18 +136,17 @@ function Folder({ folder }: { folder: FolderNode }) {
         )}
       >
         <div className="overflow-hidden">
-          <div className="mt-1 ms-0 flex flex-col">
+          <div className="mt-1 ms-2 flex flex-col border-l border-border ps-2">
             {folder.children.map((child) => {
               if (child.type === "page") {
-                return (
-                  <PageLink key={child.url} page={child as PageNode} nested />
-                )
+                return <PageLink key={child.url} page={child as PageNode} />
               }
               if (child.type === "folder") {
                 return (
                   <Folder
                     key={(child as FolderNode).$id}
                     folder={child as FolderNode}
+                    nested
                   />
                 )
               }
