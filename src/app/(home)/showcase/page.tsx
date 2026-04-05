@@ -2,46 +2,18 @@ import { ExternalLinkIcon } from "lucide-react"
 
 const projects = [
   {
-    title: "Weather Dashboard",
+    title: "Karaoke",
     description:
-      "Real-time weather app with interactive maps and 7-day forecasts.",
-    tags: ["Next.js", "TypeScript", "Mapbox"],
-    url: "https://example.com",
+      "A small demo build for Google, to showcase Chrome's Web Audio API.",
+    tags: ["Web Audio API", "Three.js"],
+    url: "https://demo-karaoke.artofrawr.com",
   },
   {
-    title: "Task Flow",
+    title: "Second Screen",
     description:
-      "Kanban-style project management tool with drag-and-drop and real-time collaboration.",
-    tags: ["React", "Node.js", "WebSockets"],
-    url: "https://example.com",
-  },
-  {
-    title: "Pulse Analytics",
-    description:
-      "Analytics dashboard for tracking key metrics with customizable widgets.",
-    tags: ["Next.js", "D3.js", "PostgreSQL"],
-    url: "https://example.com",
-  },
-  {
-    title: "Recipease",
-    description:
-      "AI-powered recipe finder that suggests meals based on available ingredients.",
-    tags: ["React", "OpenAI", "Tailwind"],
-    url: "https://example.com",
-  },
-  {
-    title: "Code Sandbox",
-    description:
-      "Browser-based code editor with live preview and shareable snippets.",
-    tags: ["TypeScript", "Monaco", "Docker"],
-    url: "https://example.com",
-  },
-  {
-    title: "Fit Tracker",
-    description:
-      "Fitness tracking app with workout logging, progress charts, and goal setting.",
-    tags: ["React Native", "Firebase", "Charts"],
-    url: "https://example.com",
+      "Proof of concept for a second screen experience, implemented with Next.js and socket.io",
+    tags: ["Next.js", "WebSockets"],
+    url: "https://demo-secondscreen.artofrawr.com",
   },
 ]
 
