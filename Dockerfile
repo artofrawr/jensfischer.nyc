@@ -1,14 +1,15 @@
 # syntax=docker/dockerfile:1
-# Multi-stage build for Nextra/Next.js production
+# Multi-stage build for Next.js production
 
 FROM node:22-alpine AS base
 RUN apk add --no-cache libc6-compat
+RUN corepack enable pnpm
 WORKDIR /app
 
 # Install dependencies
 FROM base AS deps
-COPY package.json package-lock.json* ./
-RUN npm ci
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
 # Build the application
 FROM base AS builder
@@ -16,7 +17,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN mkdir -p public
-RUN npm run build
+RUN pnpm build
 
 # Production runner
 FROM base AS runner
