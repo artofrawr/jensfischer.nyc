@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { createPortal } from "react-dom"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { MenuIcon, XIcon } from "lucide-react"
@@ -98,7 +99,7 @@ function SiteHeaderActions({
   )
 }
 
-const MobileNavContext = React.createContext<{ close: () => void }>({
+export const MobileNavContext = React.createContext<{ close: () => void }>({
   close: () => {},
 })
 
@@ -107,6 +108,18 @@ function SiteHeaderMobileNav({
   children,
 }: React.PropsWithChildren<{ className?: string }>) {
   const [open, setOpen] = React.useState(false)
+
+  // Prevent body scroll when menu is open
+  React.useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [open])
 
   return (
     <>
@@ -120,29 +133,32 @@ function SiteHeaderMobileNav({
       >
         <MenuIcon className="size-5" />
       </button>
-      {open && (
-        <>
-          <div
-            className="fixed inset-0 z-50 bg-black/50"
-            onClick={() => setOpen(false)}
-          />
-          <div className="fixed inset-y-0 left-0 z-50 w-72 bg-background shadow-lg">
-            <div className="flex h-(--header-height) items-center justify-between px-6">
-              <span className="text-sm font-semibold">Navigation</span>
-              <button
-                onClick={() => setOpen(false)}
-                className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
-                aria-label="Close menu"
-              >
-                <XIcon className="size-5" />
-              </button>
+      {open &&
+        createPortal(
+          <div className="fixed inset-0 z-50 flex flex-col bg-background animate-in fade-in duration-150">
+            <div className="container mx-auto px-6">
+              <div className="flex h-(--header-height) items-center justify-between">
+                <span className="text-sm font-semibold text-foreground">
+                  Menu
+                </span>
+                <button
+                  onClick={() => setOpen(false)}
+                  className="inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+                  aria-label="Close menu"
+                >
+                  <XIcon className="size-5" />
+                </button>
+              </div>
             </div>
+            <div className="border-t" />
             <MobileNavContext.Provider value={{ close: () => setOpen(false) }}>
-              {children}
+              <div className="container mx-auto px-6 pt-6">
+                {children}
+              </div>
             </MobileNavContext.Provider>
-          </div>
-        </>
-      )}
+          </div>,
+          document.body,
+        )}
     </>
   )
 }
@@ -167,10 +183,10 @@ function SiteHeaderMobileNavLink({
       href={href}
       onClick={close}
       className={cn(
-        "flex items-center px-6 py-2.5 text-sm font-medium transition-colors",
+        "flex items-center py-2 text-2xl font-medium transition-colors",
         isActive
-          ? "bg-accent text-foreground"
-          : "text-muted-foreground hover:bg-accent hover:text-foreground",
+          ? "text-foreground"
+          : "text-muted-foreground hover:text-foreground",
         className,
       )}
     >

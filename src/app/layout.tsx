@@ -45,20 +45,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SiteHeader>
-            <SiteHeaderMobileNav>
-              <div className="flex flex-col gap-1 pt-6">
-                <SiteHeaderMobileNavLink href="/" exact>
-                  Home
-                </SiteHeaderMobileNavLink>
-                <SiteHeaderMobileNavLink href="/docs">
-                  Knowledge
-                </SiteHeaderMobileNavLink>
-                <SiteHeaderMobileNavLink href="/showcase" exact>
-                  Showcase
-                </SiteHeaderMobileNavLink>
-              </div>
-            </SiteHeaderMobileNav>
-
             <SiteHeaderLogo href="/">
               <svg
                 width="24"
@@ -83,7 +69,8 @@ export default function RootLayout({
               <SiteHeaderNavLink href="/docs">Knowledge</SiteHeaderNavLink>
             </SiteHeaderNav>
 
-            <SiteHeaderActions>
+            <SiteHeaderActions className="hidden md:flex">
+
               <CommandMenu items={getSearchableItems()} />
               <div className="mx-1 h-4 w-px bg-border" />
               <ThemeToggle />
@@ -104,6 +91,22 @@ export default function RootLayout({
                 </svg>
               </a>
             </SiteHeaderActions>
+
+            <SiteHeaderMobileNav className="ml-auto">
+              <SiteHeaderMobileNavLink href="/" exact>
+                Home
+              </SiteHeaderMobileNavLink>
+              <SiteHeaderMobileNavLink href="/docs">
+                Knowledge
+              </SiteHeaderMobileNavLink>
+              <SiteHeaderMobileNavLink href="/showcase" exact>
+                Showcase
+              </SiteHeaderMobileNavLink>
+              <div className="mt-6 border-t pt-6 flex items-center gap-2">
+                <CommandMenu items={getSearchableItems()} />
+                <ThemeToggle />
+              </div>
+            </SiteHeaderMobileNav>
           </SiteHeader>
           {children}
         </ThemeProvider>

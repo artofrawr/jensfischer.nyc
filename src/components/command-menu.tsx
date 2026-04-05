@@ -7,6 +7,7 @@ import { Command } from "cmdk"
 import { FileTextIcon, SearchIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { MobileNavContext } from "@/components/site-header"
 
 export interface SearchableItem {
   title: string
@@ -22,6 +23,7 @@ interface CommandMenuProps {
 export function CommandMenu({ items }: CommandMenuProps) {
   const [open, setOpen] = React.useState(false)
   const router = useRouter()
+  const { close: closeMobileNav } = React.useContext(MobileNavContext)
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -37,8 +39,9 @@ export function CommandMenu({ items }: CommandMenuProps) {
 
   const runCommand = React.useCallback((command: () => void) => {
     setOpen(false)
+    closeMobileNav()
     command()
-  }, [])
+  }, [closeMobileNav])
 
   const groups = React.useMemo(() => {
     const map = new Map<string, SearchableItem[]>()
