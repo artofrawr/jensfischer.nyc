@@ -2,9 +2,7 @@ import { Fragment } from "react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { mdxComponents } from "@/mdx-components"
-import { findNeighbour } from "fumadocs-core/page-tree"
 import { getBreadcrumbItems } from "fumadocs-core/breadcrumb"
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
 import { source } from "@/lib/source"
 import {
@@ -52,7 +50,6 @@ export default async function Page(props: {
 
   const doc = page.data
   const MDX = doc.body
-  const neighbours = findNeighbour(source.pageTree, page.url)
   const breadcrumbs = getBreadcrumbItems(page.url, source.pageTree, {
     includePage: true,
   })
@@ -103,27 +100,6 @@ export default async function Page(props: {
         <MDX components={mdxComponents} />
       </div>
 
-      {/* Prev / Next navigation */}
-      <div className="mt-12 flex items-center gap-2 border-t border-border pt-6">
-        {neighbours.previous && (
-          <Link
-            href={neighbours.previous.url}
-            className="inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            <ChevronLeftIcon className="size-3.5" />
-            {neighbours.previous.name}
-          </Link>
-        )}
-        {neighbours.next && (
-          <Link
-            href={neighbours.next.url}
-            className="ml-auto inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            {neighbours.next.name}
-            <ChevronRightIcon className="size-3.5" />
-          </Link>
-        )}
-      </div>
     </DocsContent>
   )
 }

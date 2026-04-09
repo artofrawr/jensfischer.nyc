@@ -2,6 +2,13 @@ import { ExternalLinkIcon } from "lucide-react"
 
 const projects = [
   {
+    title: "Claude Control",
+    description:
+      "A public marketplace for Claude Code plugins, skills, and extensions.",
+    tags: ["Claude Code", "CLI"],
+    url: "https://github.com/artofrawr/claude-control",
+  },
+  {
     title: "Karaoke",
     description:
       "A small demo build for Google, to showcase Chrome's Web Audio API.",
