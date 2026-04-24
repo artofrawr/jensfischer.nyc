@@ -8,13 +8,169 @@ title: Claude Code
 
 ### Plugins
 
-- `core-development` Technology skill library and development workflows
-- `ethos` Personal principles that persist across all projects and survive context compaction
-- `guardrails` Safety guardrails
+#### Design
 
-### Skills
+| Skill | Description |
+| --- | --- |
+| ui-mobile | Mobile UI patterns - React Native, iOS/Android, touch targets |
+| ui-web | Web UI - glassmorphism, Tailwind, dark mode, accessibility |
 
-- [Chakra UI](https://github.com/artofrawr/claude-control/blob/main/plugins/core-development/skills/chakra-ui/SKILL.md)
-- [NestJS](https://github.com/artofrawr/claude-control/blob/main/plugins/core-development/skills/nestjs/SKILL.md)
-- [Prisma](https://github.com/artofrawr/claude-control/blob/main/plugins/core-development/skills/prisma/SKILL.md)
-- [Sentry](https://github.com/artofrawr/claude-control/blob/main/plugins/core-development/skills/sentry/SKILL.md)
+#### Development
+
+| Skill | Description |
+| --- | --- |
+| accessibility | Run comprehensive accessibility audits using axe-core and eslint-plugin-jsx-a11y |
+| agentic-development | Build AI agents with Pydantic AI (Python) and Claude SDK (Node.js) |
+| architecture-review | Systematic architecture review methodology and pattern analysis |
+| audit-website | Audit websites for SEO, performance, security, and 15 other categories with 230+ rules |
+| aws-cdk | AWS Cloud Development Kit (CDK) for building cloud infrastructure with TypeScript/Python |
+| base | Universal coding patterns, constraints, TDD workflow, atomic todos |
+| better-auth | Configure Better Auth server and client, set up database adapters, manage sessions |
+| chakra-ui | Accessible components, theming, and responsive design with @chakra-ui/react |
+| cloudflare-workers | Review and author Cloudflare Workers code against production best practices |
+| code-deduplication | Prevent semantic code duplication with capability index and check-before-write |
+| credentials | Centralized API key management from Access.txt |
+| d3js | Interactive data visualizations using d3.js - charts, graphs, network diagrams |
+| database-schema | Schema awareness - read before coding, type generation, prevent column errors |
+| dockerfile | Create, generate, and write Dockerfiles and multi-stage Docker images |
+| git-worktrees | Create isolated git worktrees with smart directory selection and safety verification |
+| i18n | Guides better-i18n integration decisions - SDK selection, CDN vs GitHub workflow |
+| llm-patterns | AI-first application patterns, LLM testing, prompt management |
+| mcp-builder | Guide for creating high-quality MCP servers for LLM-service interaction |
+| nestjs | Progressive Node.js framework with modules, guards, interceptors |
+| nextjs | Next.js best practices - file conventions, RSC boundaries, data patterns, metadata |
+| nodejs-backend | Node.js backend patterns with Express/Fastify, repositories |
+| nx-monorepo | Workspace organization, library creation, build optimization with Nx |
+| postgres | Execute read-only SQL queries against multiple PostgreSQL databases |
+| prisma | Type-safe ORM for database schema, migrations, and data access |
+| project-tooling | gh, vercel, supabase, render CLI and deployment platform setup |
+| python | Python development with ruff, mypy, pytest - TDD and type safety |
+| react-hook-form | Performant forms with validation, field arrays, and Zod integration |
+| react-native | React Native mobile patterns, platform-specific code |
+| react-web | React web development with hooks, React Query, Zustand |
+| reddit-api | Reddit API with PRAW (Python) and Snoowrap (Node.js) |
+| remotion | Best practices for Remotion - video creation in React |
+| sanity | Sanity development best practices for schema design, GROQ queries, TypeGen |
+| security | OWASP security patterns, secrets management, security testing |
+| sentry | Error tracking, performance monitoring, and error boundaries |
+| shopify-apps | Shopify app development - Remix, Admin API, checkout extensions |
+| stripe | Stripe Checkout, subscriptions, webhooks, customer portal |
+| subagent-development | Execute implementation plans with independent tasks in the current session |
+| supabase | Core Supabase CLI, migrations, RLS, Edge Functions |
+| supabase-nextjs | Next.js with Supabase and Drizzle ORM |
+| supabase-node | Express/Hono with Supabase and Drizzle ORM |
+| supabase-python | FastAPI with Supabase and SQLAlchemy/SQLModel |
+| tanstack-query | Server state management, caching, mutations with @tanstack/react-query |
+| tanstack-table | Data tables with sorting, filtering, pagination, virtualization |
+| typescript | TypeScript strict mode with eslint and jest |
+| typesense | Typo-tolerant search engine, indexing, faceted navigation |
+| web-asset-generator | Generate web assets including favicons, app icons (PWA), and social media meta images |
+| zod | Schema validation, type inference, data transformation with Zod |
+
+#### Ethos
+
+| Skill | Description |
+| --- | --- |
+| principles | Default personal principles template - replace with your own via ethos.local.md |
+
+#### Guardrails
+
+| Skill | Description |
+| --- | --- |
+| guardrails | Safety guardrails overview - explains available guard modes and how to activate them |
+
+#### Learning
+
+| Skill | Description |
+| --- | --- |
+| ai-models | Latest AI models reference - Claude, OpenAI, Gemini, Eleven Labs, Replicate |
+| brainstorming | Explores user intent, requirements and design before any creative work |
+| collision-zone-thinking | Force unrelated concepts together to discover emergent properties |
+| inversion-exercise | Flip core assumptions to reveal hidden constraints and alternative approaches |
+| meta-pattern-recognition | Spot patterns appearing in 3+ domains to find universal principles |
+| scale-game | Test at extremes (1000x bigger/smaller) to expose fundamental truths |
+| ship-learn-next | Transform learning content into actionable implementation plans |
+| simplification-cascades | Find one insight that eliminates multiple components |
+| think-deeply | Structured analysis to explore multiple perspectives before responding |
+| tracing-knowledge-lineages | Understand how ideas evolved over time to find old solutions for new problems |
+| user-journeys | User experience flows - journey mapping, UX validation, error recovery |
+
+#### Marketing
+
+| Skill | Description |
+| --- | --- |
+| ab-test-setup | Plan, design, and implement A/B tests and growth experimentation programs |
+| ad-creative | Generate, iterate, and scale ad creative - headlines, descriptions, full ad variations |
+| aeo-optimization | AI Engine Optimization - semantic triples, page templates, content clusters for AI citations |
+| cold-email | Write B2B cold emails and follow-up sequences that get replies |
+| copy-editing | Edit, review, and improve existing marketing copy or refresh outdated content |
+| copy-writing | Write, rewrite, or improve marketing copy for any page type |
+| email-sequence | Create and optimize email sequences, drip campaigns, and lifecycle email flows |
+| launch-strategy | Plan product launches, feature announcements, and go-to-market strategies |
+| lead-magnets | Create, plan, and optimize lead magnets for email capture and lead generation |
+| marketing-psychology | Apply psychological principles, mental models, and behavioral science to marketing |
+| page-cro | Optimize and increase conversions on marketing pages |
+| posthog-analytics | PostHog analytics, event tracking, feature flags, dashboards |
+| pricing-strategy | Pricing decisions, packaging, monetization strategy, and plan structuring |
+| programmatic-seo | Create SEO-driven pages at scale using templates and data |
+| reddit-ads | Reddit Ads API - campaigns, targeting, conversions, agentic optimization |
+| referral-program | Create, optimize, and analyze referral programs and word-of-mouth strategies |
+| sales-enablement | Create sales collateral - pitch decks, one-pagers, objection handling docs |
+| site-architecture | Technical SEO - robots.txt, sitemap, meta tags, Core Web Vitals |
+| social-content | Create, schedule, and optimize social media content for all platforms |
+| web-content | SEO and AI discovery (GEO) - schema, ChatGPT/Perplexity optimization |
+
+#### Media
+
+| Skill | Description |
+| --- | --- |
+| image-enhancer | Improve image quality, especially screenshots - resolution, sharpness, clarity |
+| imagen | Generate images using Google Gemini's image generation capabilities |
+| video-downloader | Download YouTube videos with customizable quality and format options |
+
+#### Meta-Tooling
+
+| Skill | Description |
+| --- | --- |
+| skill-creator | Create new skills, modify existing skills, and measure skill performance with evals |
+
+#### Testing
+
+| Skill | Description |
+| --- | --- |
+| llm-testing | Comprehensive testing prompts and wordlists for evaluating LLM security and robustness |
+| playwright-testing | E2E testing with Playwright - Page Objects, cross-browser, CI/CD |
+| ui-testing | Visual testing - catch invisible buttons, broken layouts, contrast |
+
+#### Workflows
+
+| Skill | Description |
+| --- | --- |
+| changelog-generator | Automatically create user-facing changelogs from git commits |
+| code-review | Mandatory code reviews via /code-review before commits and deploys |
+| commit-hygiene | Atomic commits, PR size limits, commit thresholds, stacked PRs |
+| dispatching-parallel-agents | Handle 2+ independent tasks without shared state or sequential dependencies |
+| finishing-a-development-branch | Guides completion of development work - merge, PR, or cleanup options |
+| iterative-development | Self-referential TDD iteration until tests pass |
+| meeting-insights | Analyze meeting transcripts for behavioral patterns and communication insights |
+| preserving-productive-tensions | Recognize when disagreements reveal valuable context and multiple valid approaches |
+| product-manager | Diagnose SaaS metrics, critique PRDs, plan roadmaps, run discovery |
+| session-management | Context preservation, tiered summarization, resumability |
+| team-coordination | Multi-person projects - shared state, todo claiming, handoffs |
+
+#### Writing
+
+| Skill | Description |
+| --- | --- |
+| article-extractor | Extract clean article content from URLs, removing ads and clutter |
+| autoresearch | Autonomous AI research projects using a two-loop architecture |
+| avoid-ai-writing | Review and rewrite content to eliminate AI writing patterns |
+| content-research-writer | Conduct research, add citations, and provide feedback for quality content |
+| deep-research | Academic research using a 13-agent pipeline for any topic |
+| docx | Create and modify Word documents with professional formatting |
+| internal-comms | Draft status reports, leadership updates, newsletters, FAQs, incident reports |
+| pdf | PDF reading, extraction, combining, splitting, watermarking, OCR, encryption |
+| pptx | Create and edit PowerPoint presentations |
+| writing-plans | Develop multi-step task plans from specifications before implementation |
+| writing-skills | Create, edit, and test new writing skills |
+| xlsx | Work with spreadsheets in multiple formats (.xlsx, .xlsm, .csv, .tsv) |
