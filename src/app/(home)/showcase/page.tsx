@@ -13,7 +13,7 @@ const products = [
     description:
       "A UI framework, with best-in-class support for AI coding agents.",
     tags: ["ui", "framework", "ai"],
-    url: "https://www.toroui.com",
+    url: "https://www.toro-ui.com",
   },
   {
     title: "Claude Control",
