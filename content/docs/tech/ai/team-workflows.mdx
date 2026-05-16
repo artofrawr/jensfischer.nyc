@@ -1,0 +1,33 @@
+---
+title: Team Workflows
+description: How engineering teams actually use AI day-to-day.
+---
+
+The interesting question isn't whether engineers use AI. They do. The interesting question is how the workflow changes when half the team is shipping with [Claude Code](/docs/tech/ai/claude-code) or Cursor and half isn't.
+
+## What works
+
+- **Spec-first.** Write a one-page spec before asking the agent to implement. Vague prompts produce vague code; specs survive the back-and-forth.
+- **Plan, then execute.** Have the agent produce a plan as a separate step. Review the plan. Then execute. Cheaper than reviewing a 500-line PR.
+- **Tight feedback loops.** Tests, types, linters. The agent uses them too. A repo with strong CI gets disproportionately more value from AI.
+- **PR as the unit of review.** No different from human PRs. Diff, description, tests. The author (human) takes responsibility regardless of who typed the code.
+- **Atomic commits.** Smaller commits = easier review, easier reversion when the agent gets it wrong.
+
+## What to avoid
+
+- **Long autonomous runs without checkpoints.** "Go build the whole feature, come back when done." The diff is unreviewable, and one mistake at step 3 poisons the rest.
+- **Skill creep.** Adding every plugin and skill before knowing what the team actually uses. Start small, observe, expand.
+- **Hiding usage.** Reviewers should know an agent wrote the code. Not for blame, for calibration. Different failure modes than human code.
+- **Treating it as a junior dev.** It's not. It's a tool that's very good at some things, very bad at others. Calibrate your trust per-task.
+
+## Onboarding
+
+- A `CLAUDE.md` or `AGENTS.md` at the repo root explaining structure, commands, and conventions. The agent uses it. So do new humans.
+- A shared set of skills, slash commands, or prompt snippets in version control. Reduces drift.
+- Pairing sessions where a senior shows how they prompt, review, and reject AI output. The skill transfers fast once seen.
+
+## Where teams get stuck
+
+- **No evals on the actual workflow.** "Does it work?" answered by feel. See [Evals](/docs/tech/ai/evals).
+- **Two cultures.** Half the team relies on AI heavily, half refuses. Productive on day 1, friction on day 90. Pick a baseline.
+- **No cost visibility.** Engineers burn $40/day in tokens and no one knows until the bill arrives. See [Budgets](/docs/tech/ai/budgets).

@@ -63,8 +63,8 @@ export default function RootLayout({
             </SiteHeaderLogo>
 
             <SiteHeaderNav>
-              <SiteHeaderNavLink href="/products" exact>
-                Products
+              <SiteHeaderNavLink href="/showcase" exact>
+                Showcase
               </SiteHeaderNavLink>
               <SiteHeaderNavLink href="/docs">Knowledge</SiteHeaderNavLink>
             </SiteHeaderNav>
@@ -99,8 +99,8 @@ export default function RootLayout({
               <SiteHeaderMobileNavLink href="/docs">
                 Knowledge
               </SiteHeaderMobileNavLink>
-              <SiteHeaderMobileNavLink href="/products" exact>
-                Products
+              <SiteHeaderMobileNavLink href="/showcase" exact>
+                Showcase
               </SiteHeaderMobileNavLink>
               <div className="mt-6 border-t pt-6 flex items-center gap-2">
                 <CommandMenu items={getSearchableItems()} />

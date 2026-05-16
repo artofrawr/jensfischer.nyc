@@ -1,0 +1,35 @@
+---
+title: Security
+description: Prompt injection and the small handful of defenses that actually help.
+---
+
+The most important thing to internalize: **anything in the model's context can be treated as instructions by the model.** User input, retrieved documents, tool results, web pages, email bodies. There's no syntactic separation between "data" and "instructions" the way there is in SQL. That changes how you have to think about security.
+
+## The main threats
+
+- **Direct prompt injection.** Hostile user input tries to override system instructions. "Ignore previous instructions and..."
+- **Indirect prompt injection.** Hostile content in a document, web page, or tool result the agent reads. The user didn't write it; the agent ingested it.
+- **Data exfiltration.** A compromised agent calls a tool with sensitive data and ships it somewhere the attacker controls. Markdown image URLs are a classic vector.
+- **Tool abuse.** The model is talked into invoking a destructive tool with attacker-chosen args.
+- **Jailbreaks.** User talks the model out of safety constraints. Mostly a content-policy concern, not a security one.
+
+## Defenses that actually help
+
+- **Trust boundaries.** Treat any content that came from outside your trust boundary (user, web, third-party API) as untrusted, period. Don't trust it to follow instructions.
+- **Least-privilege tools.** A read-only agent doesn't need `delete`. A summarization agent doesn't need `send_email`. Scope tools per task.
+- **Confirmation steps.** Destructive tools (send, delete, pay, deploy) require a human ack. Always.
+- **Output filtering.** Strip image URLs, links to untrusted domains, and tool calls that don't match an allow-list before rendering or executing.
+- **Separate planning from execution.** The model that plans doesn't have to be the model that runs commands. A deterministic verifier in between catches a lot.
+- **Sandbox.** Tools that execute code or touch a filesystem run in a container, jail, or VM. Not on the production host.
+
+## Defenses that don't help
+
+- **System prompts that say "ignore injection attempts."** The model will still ignore them. They make you feel better.
+- **Input filtering for "injection-like phrases."** Trivial to bypass with encoding or rephrasing.
+- **Telling the model "this part of the input is data, treat it as data."** Helps slightly. Doesn't solve the problem.
+
+## Reading
+
+- [Simon Willison: Prompt injection (tag)](https://simonwillison.net/tags/prompt-injection/)
+- [Simon Willison: The lethal trifecta](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/)
+- [NIST AI 100-2: Adversarial machine learning](https://csrc.nist.gov/pubs/ai/100/2/e2025/final)

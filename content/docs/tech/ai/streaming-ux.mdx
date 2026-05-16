@@ -1,0 +1,55 @@
+---
+title: Streaming UX
+description: The UX patterns that make a slow model feel fast.
+---
+
+Most LLM calls take seconds, not milliseconds. Streaming hides that. It doesn't make the model faster. It changes the user's perception of where the slowness is and gives them something to look at while they wait.
+
+## What to stream
+
+- **Tokens.** As the model generates them. Default for chat-style UIs.
+- **Tool calls.** As they're decided. "Searching the web..." appears before the tool call returns.
+- **Tool results.** Streamed back if the tool itself supports it (logs, large reads).
+- **Components.** When using [generative UI](/docs/tech/ai/generative-ui), render each component as its tool call resolves.
+
+## Patterns that work
+
+- **Render markdown as it streams.** Don't wait for the closing `` ``` `` to format the code block. Show a partial block now, finalize later.
+- **Skeleton, then content.** For known structure (a card, a form), render placeholders immediately and fill them in.
+- **Status line.** A single line above the response saying what's happening: "Reading docs...", "Calling tool X...". This is doing most of the work in a Claude or Devin-style UI.
+- **Cancel button.** Long generations need an escape hatch. Wire it to abort the request, not just hide the spinner.
+- **Stable scroll.** Don't auto-scroll to the bottom if the user has scrolled up. Sticky pin instead.
+
+## Things that go wrong
+
+- **Token-by-token markdown re-rendering.** Re-parsing markdown on every chunk pegs CPU. Buffer to ~50ms intervals.
+- **Tool calls block the stream.** A 30-second tool call with no UI feedback feels broken. Surface progress.
+- **Race conditions on retry.** Two streams active at once when the user clicks retry. Cancel the old one first.
+- **No final state.** When the stream ends, the UI should clearly mark it as done. Otherwise users wait, thinking it's still going.
+
+## Server side
+
+- **SSE** (Server-Sent Events) is the simplest transport. Works through most proxies. Easy on Vercel, Cloudflare, etc.
+- **WebSocket** when you also need to send messages back from the client mid-stream. Often overkill.
+- **HTTP/2 streaming** is fine but harder to debug.
+- For Next.js, the [Vercel AI SDK](https://sdk.vercel.ai/) handles most of this. For Python, FastAPI's `StreamingResponse` plus the provider SDK's stream method.
+
+```ts
+// app/api/chat/route.ts
+import { anthropic } from "@ai-sdk/anthropic";
+import { streamText } from "ai";
+
+export async function POST(req: Request) {
+  const { messages } = await req.json();
+  const result = streamText({
+    model: anthropic("claude-sonnet-4-6"),
+    messages,
+  });
+  return result.toUIMessageStreamResponse();
+}
+```
+
+## Reading
+
+- [Nielsen Norman Group: Response time limits](https://www.nngroup.com/articles/response-times-3-important-limits/)
+- [Vercel AI SDK: Streaming](https://sdk.vercel.ai/docs/ai-sdk-core/generating-text#streaming)

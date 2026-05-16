@@ -1,0 +1,45 @@
+---
+title: Routing
+description: Picking the right model for each step.
+---
+
+Most AI apps use one model for everything. That's the simplest thing and usually the right starting point. Routing comes in when one model is too slow, too expensive, or too dumb for some fraction of the work.
+
+## When routing earns its complexity
+
+- **Cost mismatch.** Most of your traffic is easy (classification, extraction) and a small fraction is hard (multi-step reasoning). Sending everything to the frontier model is wasteful.
+- **Latency mismatch.** Interactive UX can't wait for a thinking model. Use it only when the user asked for deep analysis.
+- **Capability mismatch.** Code tasks → Claude. Multimodal → Gemini. Cheap intent classification → Haiku/Mini.
+
+## Common patterns
+
+- **Classifier-then-model.** A small model decides the category, then the right model handles it. The classifier itself can be a cheap LLM, an embedding similarity check, or a regex.
+- **Cascade.** Try the cheap model first. If confidence is low or the answer fails a check, escalate.
+- **Parallel-then-pick.** Run N models, score the outputs, return the best. Expensive but reduces variance.
+- **Failover.** Primary provider hits a rate limit or 5xx → secondary provider. Keep prompts compatible across both.
+
+## How to build it
+
+- A function with an if/else is fine for 2-3 routes. Don't reach for a library.
+- For more, a small LLM that returns a structured route name is dead simple and easy to eval.
+- Open-source [RouteLLM](https://github.com/lm-sys/RouteLLM) and similar trained routers exist. Worth knowing about, rarely worth using.
+
+```ts
+async function route(query: string, ctx: Context) {
+  const intent = await classify(query); // cheap small model
+  switch (intent) {
+    case "code":
+      return claudeOpus(query, ctx);
+    case "multimodal":
+      return gemini(query, ctx);
+    default:
+      return claudeHaiku(query, ctx); // cheap default
+  }
+}
+```
+
+## Warnings
+
+- **Routing is a moving target.** When model capabilities shift, your routing thresholds drift. Re-eval routinely.
+- **Two models, two prompts.** Each route needs its own prompt and its own eval set.
+- **Routing hides bugs.** "It worked yesterday" turns into "it worked yesterday on the easy route." Log the chosen route in every trace.

@@ -2,6 +2,7 @@ import * as React from "react"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
+import { CodeBlock } from "@/components/code-block"
 
 export const mdxComponents = {
   h2: ({ className, ...props }: React.ComponentProps<"h2">) => (
@@ -110,6 +111,7 @@ export const mdxComponents = {
     }
     return <code className={className} {...props} />
   },
+  pre: (props: React.ComponentProps<"pre">) => <CodeBlock {...props} />,
   Link: ({ className, ...props }: React.ComponentProps<typeof Link>) => (
     <Link
       className={cn("font-medium underline underline-offset-4", className)}

@@ -1,0 +1,60 @@
+---
+title: LangGraph
+description: State-graph orchestration for agent workflows.
+---
+
+[LangGraph](https://www.langchain.com/langgraph) is LangChain's orchestration layer. It models an agent as a graph of nodes (functions) connected by edges (transitions), with explicit shared state. It's much less opinionated than the rest of LangChain.
+
+## The model
+
+- **Nodes** are functions that read and write a shared `state` object.
+- **Edges** are either fixed (always go to node B after A) or conditional (a function decides).
+- **State** is a typed dict passed between nodes. Usually a `TypedDict` or Pydantic model.
+- **Checkpoints** persist state between turns. Good for long-running, resumable workflows.
+
+## A small graph
+
+```py
+from typing import TypedDict
+from langgraph.graph import StateGraph, END
+
+class State(TypedDict):
+    query: str
+    answer: str | None
+
+def search(state: State) -> State:
+    return {**state, "answer": search_index(state["query"])}
+
+def route(state: State) -> str:
+    return END if state["answer"] else "search"
+
+graph = StateGraph(State)
+graph.add_node("search", search)
+graph.set_entry_point("search")
+graph.add_conditional_edges("search", route)
+app = graph.compile()
+```
+
+## Where it shines
+
+- **Human-in-the-loop.** Pause at a node, wait for an external input, resume.
+- **Branching workflows.** Conditional edges express "if the model called tool X, route to handler X" naturally.
+- **Durable agents.** A worker process can crash and resume from the last checkpoint.
+- **Cycles.** Tool-using agents that loop until done are easier to express as a graph than a `while` loop with state.
+
+## Pushback
+
+- **Overkill for short loops.** A 2-tool, 3-step agent doesn't need a graph. A function will do.
+- **Debugging.** When the graph gets wide, traces in LangSmith become the only way to follow what happened.
+- **Vendor pull.** Cleanest with LangSmith for traces and LangChain for chat models. You can use it standalone but it costs you.
+
+## Worth knowing
+
+- [LangGraph Platform](https://www.langchain.com/langgraph-platform) hosts the graphs with built-in queueing, retries, and persistence. Useful for production but adds lock-in.
+- The `MessagesState` helper handles chat history append patterns. Read its source before relying on it.
+- LangGraph Studio is a desktop visualizer for graphs. Helpful during design.
+
+## Reading
+
+- [LangGraph quickstart](https://langchain-ai.github.io/langgraph/tutorials/introduction/)
+- [LangGraph: Agentic concepts](https://langchain-ai.github.io/langgraph/concepts/agentic_concepts/)

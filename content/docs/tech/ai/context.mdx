@@ -1,0 +1,37 @@
+---
+title: Context
+description: Context engineering. What goes in the prompt and what stays out.
+---
+
+The model only knows what's in the context window. Everything else is invisible. Designing what shows up there, in what order, with what compression, is most of the work.
+
+## What's in a typical context
+
+- **System prompt.** Role, rules, output format.
+- **Few-shot examples.** Cheaper than fine-tuning for shaping output.
+- **Retrieved documents.** From RAG or a tool call.
+- **Conversation history.** Prior user/assistant turns.
+- **Tool definitions.** Schemas the model can call.
+- **Tool results.** What previous tool calls returned.
+- **The current user message.**
+
+## Failure modes
+
+- **Lost in the middle.** Models attend better to the start and end of long contexts. Put the important stuff at the boundaries.
+- **Context rot.** Quality degrades as you fill the window even if there's room left. Less is more.
+- **Tool result pollution.** Raw API responses are noisy. Summarize or filter before re-injecting.
+- **History bloat.** A 20-turn conversation rarely needs all 20 turns. Summarize after N.
+- **Conflicting instructions.** System prompt says X, retrieved doc says Y. The model picks one, often wrong.
+
+## Patterns
+
+- **Cacheable prefix.** Put the static parts (system prompt, tool definitions, few-shot examples) at the top so prompt caching works. See [Budgets](/docs/tech/ai/budgets).
+- **Structured tool results.** Return JSON the model can re-read, not free text it has to re-parse.
+- **Rolling summary.** Every N turns, replace history with a model-generated summary plus the last 2 turns verbatim.
+- **Retrieved-then-grounded.** When citing sources, paste the source inline with an ID and ask the model to cite the ID. Don't trust it to remember.
+
+## Reading
+
+- [Anthropic: Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+- [Lost in the Middle (Liu et al., 2023)](https://arxiv.org/abs/2307.03172)
+- [Drew Breunig: How long contexts fail](https://www.dbreunig.com/2025/06/22/how-contexts-fail-and-how-to-fix-them.html)

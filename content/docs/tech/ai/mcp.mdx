@@ -1,0 +1,60 @@
+---
+title: MCP
+description: Model Context Protocol. A standard for connecting tools and data to LLM clients.
+---
+
+[Model Context Protocol](https://modelcontextprotocol.io/) is Anthropic's open spec for how LLM clients (Claude Desktop, Cursor, IDEs, agent runtimes) connect to external tools and data sources. The pitch: write a server once, every MCP-aware client can use it.
+
+## The shape
+
+- **Server.** A process that exposes tools, resources, and prompts over stdio or HTTP.
+- **Client.** The thing that talks to the model. Discovers servers, calls their tools, surfaces results.
+- **Tools.** Functions the model can call.
+- **Resources.** Read-only data the client can fetch into context.
+- **Prompts.** Parameterized prompt templates the server provides.
+
+## Why it caught on
+
+- **Reuse.** Once your tool is an MCP server, it works in Claude Desktop, Cursor, Zed, Windsurf, and any agent that adds a client.
+- **Local-first.** stdio servers run on your machine. Filesystem, Git, databases. Accessible without exposing them to a cloud.
+- **Composable.** Multiple servers in one client. Each one focused on a domain.
+
+## Building a server
+
+Two SDKs do most of what people need: [`@modelcontextprotocol/sdk`](https://github.com/modelcontextprotocol/typescript-sdk) (TS) and [`mcp`](https://github.com/modelcontextprotocol/python-sdk) (Python). Both expose decorators or builder APIs that turn a function into a tool.
+
+A typical TS server is ~50 lines: declare tools with Zod schemas, wire them to handlers, start on stdio. The complexity comes from what the tools actually do, not the protocol.
+
+```ts
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+
+const server = new McpServer({ name: "weather", version: "0.1.0" });
+
+server.tool(
+  "get_weather",
+  "Current weather for a city.",
+  { city: z.string().describe("City name, e.g. 'Brooklyn'") },
+  async ({ city }) => {
+    const res = await fetch(`https://api.example.com/weather/${city}`);
+    const data = await res.json();
+    return { content: [{ type: "text", text: `${data.temp}°F in ${city}` }] };
+  }
+);
+
+await server.connect(new StdioServerTransport());
+```
+
+## Where it's still rough
+
+- **Auth.** OAuth flow for remote servers is improving but still painful.
+- **Discovery.** No central directory yet. Each client has its own way of adding servers.
+- **Long-running tools.** Streaming and progress reporting work but feel bolted on.
+- **Versioning.** Tool schemas can change underneath a client.
+
+## Reading
+
+- [Anthropic: Introducing MCP](https://www.anthropic.com/news/model-context-protocol)
+- [MCP spec](https://modelcontextprotocol.io/specification)
+- [Awesome MCP Servers](https://github.com/punkpeye/awesome-mcp-servers)

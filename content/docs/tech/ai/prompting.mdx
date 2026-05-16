@@ -1,0 +1,50 @@
+---
+title: Prompting
+description: The handful of prompting moves that actually matter.
+---
+
+Most prompting advice is folk medicine. A small number of moves consistently work; the rest is noise. These are the ones worth keeping.
+
+## What works
+
+- **Be explicit about the task.** "Summarize this in 3 bullets" beats "summarize this." Specify length, format, audience, what to skip.
+- **Show, don't tell.** 2-3 input/output examples (few-shot) shape the model better than a paragraph of rules.
+- **Ask for structured output.** JSON with a schema. Or use the provider's structured output API. Free-text output is harder to use downstream.
+- **Put instructions where the model attends.** System prompt up top, user message at the bottom. Repeat critical constraints right before the answer.
+- **Let it think before answering.** For reasoning tasks, add "think step by step" or use a thinking model. For simple tasks, skip it.
+- **Use XML or Markdown to delimit sections.** Anthropic models love XML tags. OpenAI is fine with Markdown headings.
+
+## Structure with XML tags
+
+For Claude in particular, wrapping inputs in semantic tags consistently outperforms inline prose instructions.
+
+```
+<task>
+Classify the support ticket below as one of: billing, technical, account, other.
+</task>
+
+<ticket>
+{ticket_body}
+</ticket>
+
+Return only the label, no other text.
+```
+
+## What stopped working
+
+- **Role-play prompts.** "You are a world-class expert..." adds nothing on modern models.
+- **Threats and rewards.** "I'll tip you $200" was a meme that briefly worked and then didn't.
+- **Hedging language.** "If possible, please try to..." invites the model to skip the task.
+- **Long preambles.** Get to the task fast. Save tokens.
+
+## Per-provider notes
+
+- **Anthropic.** XML tags for structure. [Their prompt library](https://docs.anthropic.com/en/prompt-library/library) is worth skimming.
+- **OpenAI.** Markdown for structure, structured outputs via `response_format`.
+- **Gemini.** Handles long context well; give it the docs and ask.
+
+## Reading
+
+- [Anthropic: Prompt engineering overview](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview)
+- [OpenAI: Prompt engineering guide](https://platform.openai.com/docs/guides/prompt-engineering)
+- [Eugene Yan: Prompting fundamentals](https://eugeneyan.com/writing/prompting/)

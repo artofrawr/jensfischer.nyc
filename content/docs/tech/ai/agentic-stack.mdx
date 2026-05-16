@@ -1,0 +1,65 @@
+---
+title: Agentic Stack
+description: The layers that show up when building an agent application.
+---
+
+An "agent" is a loop around a model that can call tools and decide what to do next. The actual stack underneath has a handful of layers that show up in every serious agent project.
+
+## The layers
+
+| Layer            | What it does                                  | Typical choice                                       |
+| ---------------- | --------------------------------------------- | ---------------------------------------------------- |
+| **Model**        | Reasoning, generation                         | Claude, GPT, Gemini, or an open model                |
+| **Tools**        | Side effects, retrieval, computation          | Custom functions, MCP servers, code execution        |
+| **Context**      | What the model sees on each turn              | System prompt, retrieved docs, tool results, history |
+| **Orchestration**| Loop control, branching, retries              | A `while` loop, LangGraph, your own state machine    |
+| **Memory**       | Persistence across turns or sessions          | DB rows, vector store, summaries                     |
+| **Evals**        | How you know it works                         | Golden set + LLM judge + production traces           |
+| **Observability**| Tracing, replay, cost monitoring              | Langfuse, LangSmith, Braintrust, Helicone            |
+| **Deployment**   | Where the loop runs                           | Edge function, long-running worker, queue            |
+
+## The loop, concretely
+
+```ts
+import Anthropic from "@anthropic-ai/sdk";
+const client = new Anthropic();
+
+async function runAgent(messages, tools) {
+  while (true) {
+    const response = await client.messages.create({
+      model: "claude-sonnet-4-6",
+      max_tokens: 4096,
+      tools,
+      messages,
+    });
+    messages.push({ role: "assistant", content: response.content });
+
+    if (response.stop_reason !== "tool_use") return response;
+
+    const results = await Promise.all(
+      response.content
+        .filter((b) => b.type === "tool_use")
+        .map(async (b) => ({
+          type: "tool_result",
+          tool_use_id: b.id,
+          content: await runTool(b.name, b.input),
+        }))
+    );
+    messages.push({ role: "user", content: results });
+  }
+}
+```
+
+## Findings
+
+- **The loop is small.** Most agent code is a 20-line `while` loop. The framework is rarely the hard part.
+- **Tools are the product.** The value of an agent is its tools. Spend time on tool design, not orchestration.
+- **Context is the bottleneck.** What you put in the prompt matters more than which model you pick. See [Context](/docs/tech/ai/context).
+- **Long horizons are hard.** Agents that take 10+ steps fail in ways short ones never do. Test long traces explicitly.
+- **State leaks everywhere.** Tool results, scratchpads, errors. All of it ends up in context. Plan for it.
+
+## Reading
+
+- [Anthropic: Building effective agents](https://www.anthropic.com/research/building-effective-agents)
+- [Simon Willison: agents](https://simonwillison.net/tags/agents/)
+- [Lilian Weng: LLM-powered autonomous agents](https://lilianweng.github.io/posts/2023-06-23-agent/)

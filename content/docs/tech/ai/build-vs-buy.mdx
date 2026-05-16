@@ -1,0 +1,29 @@
+---
+title: Build vs Buy
+description: When to call an API, when to use a framework, when to host your own model.
+---
+
+The default should be: call the smallest abstraction that gets the job done. Most "AI platforms" you're considering buying you don't need.
+
+## The ladder
+
+1. **Just the API.** Anthropic or OpenAI SDK. A `while` loop. This covers 80% of real applications. Start here.
+2. **A thin framework.** Vercel AI SDK, Mastra, Pydantic AI. Useful when you want streaming, tool-call plumbing, or typed schemas without writing them yourself.
+3. **An orchestration framework.** [LangGraph](/docs/tech/ai/langgraph), Inngest, Temporal. When you need durable state, human-in-the-loop, or branching workflows.
+4. **A managed agent platform.** [LangSmith](/docs/tech/ai/langsmith), AgentOps, Vellum. When ops, evals, and observability matter more than control over the loop.
+5. **Self-hosted open model.** Llama, Qwen, Mistral on vLLM or Ollama. When latency, privacy, or unit cost at scale forces the question.
+6. **Fine-tuning.** Almost always premature. Try prompting and retrieval first.
+
+## Decision framework
+
+- If the problem is **prompt engineering**, no framework helps. Skip to evals.
+- If the problem is **orchestration** (long workflows, retries, durable state), buy or use a framework.
+- If the problem is **observability**, buy. Building this from scratch is a tarpit.
+- If the problem is **regulatory** (data residency, no third-party processors), self-host.
+- If the problem is **cost at scale**, run the math. Hosted models are cheaper than commonly assumed under ~100M tokens/month.
+
+## What to avoid buying too early
+
+- Vector DB before you have a corpus that needs one. Postgres + pgvector handles ~1M rows.
+- "AI gateway" products before you have a routing problem.
+- Fine-tuning services before you've exhausted prompting and RAG.

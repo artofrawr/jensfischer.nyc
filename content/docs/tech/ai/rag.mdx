@@ -1,0 +1,41 @@
+---
+title: RAG
+description: Retrieval-augmented generation. When it's worth the trouble.
+---
+
+RAG puts relevant documents in the prompt before the model answers. It's the right answer for "the model needs information it doesn't have," but it's also the most over-engineered part of most AI apps.
+
+## Before reaching for RAG
+
+- **Does the corpus fit in context?** Frontier models hold 200K-2M tokens. If your knowledge base is under 100K tokens, just paste it in. Cache the prefix.
+- **Is the question really about retrieval?** Many "RAG" problems are actually classification or extraction. Don't retrieve when you can deterministically look up.
+- **Do you need fresh data?** A web search tool is often a better fit than a vector store.
+
+## The minimal pipeline
+
+1. **Chunk** the source documents. Start with paragraphs or fixed token windows. Refine later.
+2. **Embed** each chunk with a model like `text-embedding-3-large` or Voyage `voyage-3`.
+3. **Store** in any vector database: Postgres with pgvector, Qdrant, Pinecone, Turbopuffer.
+4. **Retrieve** the top K chunks by cosine similarity to the query.
+5. **Rerank** with a cross-encoder (Cohere Rerank, Voyage Rerank). Big quality win for small cost.
+6. **Stuff** the top reranked chunks into the prompt with clear citations.
+
+## What moves the needle
+
+- **Hybrid search.** Combine BM25 (keyword) with dense retrieval. Most corpora benefit.
+- **Reranking.** Often more impact than swapping embedding models.
+- **Better chunking.** Paragraph-aware, structure-aware, or per-document logic beats fixed windows.
+- **Query rewriting.** Use the model to expand or rephrase the query before searching.
+- **Metadata filters.** Filter by user, doc type, date before semantic search.
+
+## What rarely moves the needle
+
+- Swapping vector databases.
+- Changing the embedding model from a recent good one to a different recent good one.
+- HyDE, multi-query, and other clever query expansions on small corpora.
+
+## Reading
+
+- [Anthropic: Contextual retrieval](https://www.anthropic.com/news/contextual-retrieval)
+- [Jason Liu: Systematically improving RAG](https://jxnl.co/writing/2024/05/22/systematically-improving-your-rag/)
+- [Eugene Yan: Patterns for building LLM systems](https://eugeneyan.com/writing/llm-patterns/)

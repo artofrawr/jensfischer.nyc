@@ -1,0 +1,62 @@
+---
+title: Tool Use
+description: Function calling. Making it actually work.
+---
+
+Tool use (function calling) is how the model interacts with the outside world. The API is simple: you give the model a list of tool schemas, the model returns a structured tool call, you execute it, you feed the result back. Where it gets hard is everything around that.
+
+## Tool definition checklist
+
+- **Name** is short and verb-led. `get_weather`, not `weatherTool` or `tool_for_getting_weather`.
+- **Description** is the most important field. Treat it as a mini-prompt. Say what the tool does, when to use it, when not to use it.
+- **Parameter descriptions** matter as much as the name. The model reads them. Spell out units, formats, allowed values.
+- **Required vs optional** flags are followed most of the time but not always. Validate on your end.
+- **Examples** in the description help disambiguate similar tools.
+
+## A clean tool definition
+
+```ts
+const tools = [
+  {
+    name: "get_order",
+    description:
+      "Look up an order by its ID. Use when the user mentions an order number. " +
+      "Returns null if no order exists with that ID.",
+    input_schema: {
+      type: "object",
+      properties: {
+        order_id: {
+          type: "string",
+          description: "Format: 'ORD-' followed by 8 digits, e.g. 'ORD-12345678'.",
+        },
+      },
+      required: ["order_id"],
+    },
+  },
+];
+```
+
+## Patterns
+
+- **Few, broad tools beats many narrow tools.** `query_database(sql)` is often better than 20 hand-written CRUD tools, if you can sandbox the SQL.
+- **Return structured data.** JSON the model can re-read, not human-readable prose it has to re-parse.
+- **Compress before returning.** A 50KB JSON response chews context. Summarize or filter to what the model actually needs.
+- **Parallel tool calls.** Anthropic and OpenAI both support them. Encourage parallelism for independent reads.
+- **Error messages are prompts.** When a tool fails, return a clear message the model can act on. "File not found: /foo. Did you mean /bar?" is better than a stack trace.
+
+## What goes wrong
+
+- **Wrong tool picked.** Usually a description problem. Make the boundary between similar tools explicit.
+- **Hallucinated arguments.** Model invents an ID that doesn't exist. Validate, return a useful error, let the model retry.
+- **Stuck loops.** Same tool called with the same args repeatedly. Detect and break out; surface to the user.
+- **Schema drift.** You change the tool, the model is still calling the old shape. Version it and reject old calls explicitly.
+
+## Tool use vs structured output
+
+If you need the model to return data in a specific shape and don't need a side effect, use **structured output** (the provider's JSON schema mode). Don't dress it up as a fake tool. Cleaner, faster, and you skip the round trip.
+
+## Reading
+
+- [Anthropic: Tool use](https://docs.anthropic.com/en/docs/build-with-claude/tool-use)
+- [OpenAI: Function calling](https://platform.openai.com/docs/guides/function-calling)
+- [Anthropic: Writing effective tool descriptions](https://docs.anthropic.com/en/docs/build-with-claude/tool-use#best-practices-for-tool-definitions)

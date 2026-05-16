@@ -1,4 +1,26 @@
 {
   "title": "AI",
-  "pages": ["claude-code", "image-generation"]
+  "pages": [
+    "agentic-stack",
+    "ai-design",
+    "budgets",
+    "build-vs-buy",
+    "claude-code",
+    "context",
+    "evals",
+    "failure-modes",
+    "generative-ui",
+    "langchain",
+    "langgraph",
+    "langsmith",
+    "mcp",
+    "models",
+    "prompting",
+    "rag",
+    "routing",
+    "security",
+    "streaming-ux",
+    "team-workflows",
+    "tool-use"
+  ]
 }

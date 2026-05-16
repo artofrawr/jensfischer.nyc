@@ -2,8 +2,9 @@
   "pages": [
     "index",
     "---Tech---",
-    "tech/awesome-list",
     "tech/ai",
+    "tech/awesome-list",
+    "tech/best-practices",
     "---Miscellaneous---",
     "misc/chess",
     "misc/discipline",

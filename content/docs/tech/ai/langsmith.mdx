@@ -1,0 +1,31 @@
+---
+title: LangSmith
+description: LangChain's observability and eval platform.
+---
+
+[LangSmith](https://smith.langchain.com/) is the tracing, dataset, and eval tool from the LangChain team. It works with LangChain and [LangGraph](/docs/tech/ai/langgraph) natively, but you can use it with any LLM call via its SDK.
+
+## What it does well
+
+- **Traces.** Every LLM call, tool call, and chain step rendered as a tree with timing, tokens, and cost.
+- **Datasets.** Capture production runs, label them, save as a dataset for eval.
+- **Evals.** Run a dataset against a new prompt or model, compare scores. Supports LLM-as-judge with templates.
+- **Playgrounds.** Open any traced call in a sandbox and tweak the prompt. Useful for debugging.
+- **Annotation queues.** Send traces to a teammate for human review.
+
+## Where it's weak
+
+- **Pricing.** It bills per trace. A chatty agent can rack up fast. Sample traces in production.
+- **Multi-provider parity.** Tightest with LangChain/LangGraph. Standalone SDK works but you lose some niceties.
+- **Local dev.** The cloud version is the only good experience. Self-hosting exists but is heavier than it should be.
+
+## Alternatives
+
+| Tool | Notes |
+| --- | --- |
+| [Langfuse](https://langfuse.com/) | Open source. Self-hostable. Solid traces and datasets. My default for new projects. |
+| [Braintrust](https://www.braintrust.dev/) | Strongest eval ergonomics. Good for teams where evals are the workflow. |
+| [Helicone](https://www.helicone.ai/) | Lightweight proxy approach. Easiest to drop in. |
+| [Arize Phoenix](https://phoenix.arize.com/) | Open source, OpenTelemetry-based. Good if you're already on OTel. |
+
+The honest take: pick one and instrument early. The specific tool matters less than having any traces at all.

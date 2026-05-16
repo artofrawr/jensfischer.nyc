@@ -1,0 +1,40 @@
+---
+title: Generative UI
+description: When it's worth letting the model pick or render UI, and when a static template is fine.
+---
+
+"Generative UI" can mean two different things. Worth keeping them separate.
+
+## Two flavors
+
+- **Component selection.** The model picks from a fixed set of pre-built components and fills in props. Safe, fast, type-checked. Most production "generative UI" is this.
+- **Component generation.** The model writes JSX, HTML, or a DSL on the fly. Powerful but slow, harder to make secure, harder to test.
+
+For 95% of apps, component selection is the right answer.
+
+## When component selection is worth it
+
+- Chat replies where structured data shows up sometimes (a chart, a form, a map, a list of products).
+- Search results where the right card type depends on the result type.
+- Agent output where you want a richer view than markdown.
+
+The pattern: define tools that return typed payloads, render each payload with a matching React component. The Vercel AI SDK calls this `tool` → `component` mapping and it's a clean approach.
+
+## When component generation makes sense
+
+- Internal tools where speed and consistency matter less than coverage.
+- Sandboxed environments (artifacts, code execution) where rendered output is the whole point.
+- Prototyping. v0, bolt.new, lovable.
+
+## What goes wrong
+
+- **Latency.** Rendering after the full message arrives feels broken. Stream components as their tool calls resolve.
+- **Inconsistency.** The model picks card A one time and card B the next for the same query. Pin component choice in the prompt or post-process.
+- **Security.** Don't render model-generated HTML without sanitizing. Iframe sandbox at minimum if you're rendering code.
+- **Accessibility.** Generated components often skip alt text, labels, focus order. Either bake a11y into your component library or audit output.
+
+## Reading
+
+- [Vercel AI SDK: Generative UI](https://sdk.vercel.ai/docs/ai-sdk-ui/generative-user-interfaces)
+- [Anthropic: Artifacts](https://www.anthropic.com/news/artifacts)
+- [Geoffrey Litt: Malleable software in the age of LLMs](https://www.geoffreylitt.com/2023/03/25/llm-end-user-programming.html)

@@ -1,0 +1,59 @@
+---
+title: Evals
+description: How to know an AI feature actually works.
+---
+
+Without evals you're tuning prompts by vibe. With evals you can change models, refactor prompts, and ship with confidence. They are the single highest-leverage piece of infrastructure on an AI team.
+
+## The minimum viable eval
+
+1. **Collect 20-50 real examples.** From production traces, user requests, or hand-written.
+2. **Label them.** A pass/fail or a 1-5 rubric. Do it yourself the first time.
+3. **Run them on every prompt change.** A script, a CI step, whatever. The cadence matters more than the tool.
+4. **Watch the score over time.** When it drops, find out which examples broke.
+
+That's it. You can spend the next year improving on this. You can't skip it.
+
+```py
+import anthropic
+
+client = anthropic.Anthropic()
+
+EXAMPLES = [
+    {"input": "Refund my order #1234", "expected": "refund"},
+    {"input": "Where is my package?",  "expected": "track"},
+    # ...
+]
+
+def classify(text: str) -> str:
+    msg = client.messages.create(
+        model="claude-haiku-4-5",
+        max_tokens=20,
+        system="Return one of: refund, track, account, other. Nothing else.",
+        messages=[{"role": "user", "content": text}],
+    )
+    return msg.content[0].text.strip().lower()
+
+passed = sum(classify(ex["input"]) == ex["expected"] for ex in EXAMPLES)
+print(f"{passed}/{len(EXAMPLES)} passed")
+```
+
+## What to grade
+
+- **Exact match.** When the answer is structured (JSON, classification, extraction).
+- **LLM-as-judge.** When the answer is open-ended. Use a stronger model than the one being evaluated. Calibrate the judge against human labels.
+- **Code execution.** When the answer is code. Run it.
+- **Trajectory.** For agents. Did it call the right tools, in roughly the right order, without obvious mistakes?
+
+## Things that go wrong
+
+- **Evals drift.** Real usage changes. Re-sample from production every few weeks.
+- **LLM judges are biased.** They favor longer answers, their own family of models, and answers that look confident. Calibrate.
+- **You optimize the eval, not the product.** Watch out for prompts that game the metric. Spot-check real usage.
+- **No one looks at the data.** Half the value is reading 20 traces and noticing the same failure three times.
+
+## Reading
+
+- [Hamel Hussain: Your AI product needs evals](https://hamel.dev/blog/posts/evals/)
+- [Hamel Hussain: Field guide for LLM evaluations](https://hamel.dev/blog/posts/field-guide/)
+- [Eugene Yan: Evaluating LLM applications](https://eugeneyan.com/writing/abstractive/)

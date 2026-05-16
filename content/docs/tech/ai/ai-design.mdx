@@ -1,0 +1,37 @@
+---
+title: AI Design
+description: Product and UX patterns for shipping AI features.
+---
+
+AI features fail in user-facing ways that traditional features don't. The model is stochastic, slow, and sometimes wrong. Good design absorbs that.
+
+## Principles
+
+- **Show the work.** Cite sources, surface tool calls, render intermediate steps. Trust comes from visible reasoning, not confident output.
+- **Make undo cheap.** Anything destructive needs a confirmation step or a reversible action. Autopilot only where the cost of being wrong is low.
+- **Give the user something to do while it thinks.** Stream tokens, show a skeleton, narrate the plan. Empty loading states feel twice as long.
+- **Default to drafts, not commits.** Generate into a state the user has to accept. Pre-filled forms, not auto-submitted ones.
+- **Fail explicitly.** When the model can't answer, say so. Hallucinated confidence is worse than a missing answer.
+
+## Patterns worth stealing
+
+| Pattern | Where it works |
+| --- | --- |
+| **Inline citations** | Perplexity, Notion AI: every claim links back |
+| **Suggestion chips** | ChatGPT, Cursor: show possible next prompts |
+| **Diff view for edits** | Cursor, Linear AI: never overwrite silently |
+| **"Working..." narration** | Claude, Devin: say what the agent is doing right now |
+| **Cancel button** | Every good chat UI: long runs need an escape hatch |
+
+## Anti-patterns
+
+- A spinner with no text. Users assume it's broken after 3 seconds.
+- "I'm an AI and I can't do that." Either do it or fail with a real error.
+- Long answers when one sentence would do. Match length to the question.
+- Asking the user to write a prompt from scratch. Most users don't know what to type. Suggest something.
+
+## Reading
+
+- [Linus Lee: Imagining better interfaces for thought](https://thesephist.com/posts/notation/)
+- [Maggie Appleton: The expanding dark forest and generative AI](https://maggieappleton.com/ai-dark-forest)
+- [Apple: Designing for ML](https://developer.apple.com/design/human-interface-guidelines/machine-learning)

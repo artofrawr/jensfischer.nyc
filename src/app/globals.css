@@ -84,6 +84,41 @@
   }
 }
 
+/* Shiki dual-theme color resolution */
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+}
+
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark);
+}
+
+/* Line numbers via CSS counter on .line spans */
+.shiki code {
+  counter-reset: step;
+  counter-increment: step 0;
+  display: grid;
+}
+
+.shiki code .line {
+  display: inline-block;
+  width: 100%;
+}
+
+.shiki code .line::before {
+  content: counter(step);
+  counter-increment: step;
+  display: inline-block;
+  width: 1.75rem;
+  margin-right: 1.25rem;
+  text-align: right;
+  color: var(--muted-foreground);
+  opacity: 0.5;
+  user-select: none;
+}
+
 .client-logos {
   border-top: 1px solid var(--border);
   border-left: 1px solid var(--border);

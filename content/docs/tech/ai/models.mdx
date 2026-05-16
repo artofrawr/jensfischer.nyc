@@ -1,0 +1,45 @@
+---
+title: Models
+description: How to pick a model.
+---
+
+There are three things that matter when picking a model: how good is it at the task, how fast is it, and how much does it cost. Everything else is a footnote.
+
+## Frontier families
+
+| Family | Notes |
+| --- | --- |
+| **Claude** (Anthropic) | Strongest at long contexts, agentic loops, and code. Opus is the heavy, Sonnet is the workhorse, Haiku is the fast cheap one. |
+| **GPT** (OpenAI) | Broad capability, deepest tool/function ecosystem. o-series for reasoning. Mini for sub-tasks. |
+| **Gemini** (Google) | Multimodal native, longest context, cheapest at the high end. Flash for speed. |
+| **Grok** (xAI) | Improving fast. Strong reasoning at the top tier. |
+
+Pick by task, not family. Code-writing agents tend to do well with Claude. Multimodal RAG over PDFs tends to favor Gemini. Search-heavy work tends to favor GPT.
+
+## Open models worth knowing
+
+- **Llama** (Meta). The workhorse open model.
+- **Qwen** (Alibaba). Top open model on most benchmarks lately, strong at code and math.
+- **Mistral.** European, smaller models, often good fits for fine-tuning.
+- **DeepSeek.** Strong reasoning models at low cost via API.
+
+Hosted via [Together](https://www.together.ai/), [Fireworks](https://fireworks.ai/), [Groq](https://groq.com/), or [Replicate](https://replicate.com/). Self-hosted via vLLM or Ollama.
+
+## Specialty models
+
+- **Embeddings.** OpenAI `text-embedding-3-large`, Cohere `embed-v3`, Voyage. See [RAG](/docs/tech/ai/rag).
+- **Rerankers.** Cohere Rerank, Voyage Rerank. Cheap to add, large quality bump.
+- **Whisper / Deepgram** for speech-to-text.
+- **ElevenLabs** for TTS.
+- **Replicate / Fal** for image and video.
+
+## Selection process
+
+1. Start with the best frontier model. Get the prompt right.
+2. Once it works, try the smaller/cheaper model in the same family. Run [evals](/docs/tech/ai/evals). If it passes, keep it.
+3. Only consider open models when cost, privacy, or latency forces it.
+
+## Reading
+
+- [Artificial Analysis](https://artificialanalysis.ai/): independent benchmarks across providers
+- [Simon Willison: Things we learned about LLMs](https://simonwillison.net/2024/Dec/31/llms-in-2024/)

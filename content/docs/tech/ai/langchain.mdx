@@ -1,0 +1,49 @@
+---
+title: LangChain
+description: My take on LangChain.
+---
+
+[LangChain](https://www.langchain.com/) is the most popular LLM framework in the Python and JS ecosystems. It's also the most polarizing. Both are deserved.
+
+## What it gives you
+
+- **Adapters** for every model provider, vector store, and tool. One interface, many backends.
+- **LCEL** (LangChain Expression Language). A `|` pipe operator for composing prompt → model → parser chains.
+- **A huge community.** Tutorials, integrations, and Stack Overflow answers exist for almost any combination.
+- **Adjacent products.** [LangGraph](/docs/tech/ai/langgraph) for orchestration, [LangSmith](/docs/tech/ai/langsmith) for tracing.
+
+## LCEL in one snippet
+
+```py
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_anthropic import ChatAnthropic
+from langchain_core.output_parsers import StrOutputParser
+
+chain = (
+    ChatPromptTemplate.from_template("Translate to French: {text}")
+    | ChatAnthropic(model="claude-haiku-4-5")
+    | StrOutputParser()
+)
+
+chain.invoke({"text": "Where is the library?"})
+```
+
+## Pushback
+
+- **Indirection tax.** Reading LangChain code often takes longer than reading the underlying SDK call would. The abstraction can hide what's actually being sent to the model.
+- **Churn.** v0.1 → v0.2 → v0.3 broke a lot of tutorials. Pin versions and expect maintenance.
+- **Anti-patterns baked in.** Some defaults (chat history handling, retriever wrappers) hide problems you'd rather see.
+
+## When to use it
+
+- Prototyping a chain that touches many integrations (Slack, Google Drive, Postgres) and you want them in one place.
+- A team that's already using LangSmith for tracing. LangChain integrates more cleanly there.
+- Standard RAG pipelines where the abstractions match what you'd build anyway.
+
+## When to skip it
+
+- Single-provider apps (one model, one vector store). The native SDK is fine.
+- Anything where you'd benefit from full control over the prompt and tool call format.
+- Production systems that need stable APIs over a 2-3 year horizon.
+
+For agent loops specifically, [LangGraph](/docs/tech/ai/langgraph) is better-shaped than the original LangChain agent abstractions.

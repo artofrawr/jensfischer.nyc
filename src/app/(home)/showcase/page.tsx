@@ -38,13 +38,13 @@ const products = [
   // },
 ]
 
-export default function Products() {
+export default function Showcase() {
   return (
     <main className="max-w-screen-lg mx-auto px-8 pt-8">
       <div className="py-20 max-w-screen-lg mx-auto">
-        <h1 className="text-4xl font-normal pb-2">Products</h1>
+        <h1 className="text-4xl font-normal pb-2">Showcase</h1>
         <p className="text-xl text-muted-foreground max-w-prose pb-12">
-          A collection of apps and products I&apos;ve built.
+          A collection of projects &amp; products I&apos;ve shipped.
         </p>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

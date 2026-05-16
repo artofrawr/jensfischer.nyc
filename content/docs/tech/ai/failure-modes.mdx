@@ -1,0 +1,35 @@
+---
+title: Failure Modes
+description: A running list of how AI applications break in production.
+---
+
+The novel ways an LLM app can fail don't show up in unit tests. They show up in production traces. Most of them are predictable once you've seen them once.
+
+## Output failures
+
+- **Hallucination.** Confident, wrong, unfounded. Worse with niche domains and long answers.
+- **Format breakage.** JSON that doesn't parse, missing fields, wrong types. Use structured output APIs or schema-constrained decoding.
+- **Refusal.** The model declines a perfectly reasonable request. Often a system prompt issue, sometimes a safety filter on the API.
+- **Sycophancy.** Agreeing with the user even when they're wrong. Especially bad in multi-turn.
+- **Truncation.** The model hits `max_tokens` mid-answer. Cap output sensibly and detect partial responses.
+
+## Reasoning failures
+
+- **Wrong tool selected.** Picks `search_web` when it should `read_file`. Improve tool descriptions before blaming the model.
+- **Tool call loops.** Calls the same tool with the same args 5 times in a row. Detect and break out.
+- **Lost intent.** After 15 turns, the agent has forgotten the original goal. Periodically remind it.
+- **Premature stopping.** Returns "I've completed the task" with the task half done. Add a checker step.
+- **Over-planning.** Spends 10 steps "thinking about the approach" before doing anything.
+
+## System failures
+
+- **Context overflow.** Conversation grew past the window. Truncation rules need to exist before this happens, not after.
+- **Rate limits.** Bursty traffic + a single API key. Use a queue or a routing layer.
+- **Cost runaway.** A bug causes one user's agent to loop forever. See [Budgets](/docs/tech/ai/budgets).
+- **Stale cache.** Cached prompt prefix becomes wrong after a system change. Invalidate explicitly.
+
+## Adversarial failures
+
+- **Prompt injection.** Hostile user input or document content rewrites instructions. See [Security](/docs/tech/ai/security).
+- **Data exfiltration via tools.** A tool returns secrets to a user who shouldn't see them.
+- **Jailbreaks.** User talks the model out of its system prompt. Don't put real secrets there in the first place.

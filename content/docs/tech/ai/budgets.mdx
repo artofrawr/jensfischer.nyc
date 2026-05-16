@@ -1,0 +1,32 @@
+---
+title: Budgets
+description: LLM cost management without spending evenings on dashboards.
+---
+
+A small AI feature can cost $0.001 per call or $1.00 depending on choices that look the same in code. Budgets are a design problem, not a billing one.
+
+## Where the cost actually goes
+
+- **Context size.** Every retrieved doc, every prior turn, every tool result is paying input tokens. Trim aggressively.
+- **Output length.** Cap `max_tokens`. Models will happily ramble.
+- **Reasoning models.** Hidden chain-of-thought is billed. Use them only when the task warrants it.
+- **Retries.** A failed tool call followed by a retry is two full requests. Add a retry budget per session.
+- **Agent loops.** N steps × tokens per step. Long horizons compound fast.
+
+## Levers in order of impact
+
+1. **Prompt caching.** Anthropic and OpenAI both support it. For repeated system prompts or RAG context this can cut input cost by 90%.
+2. **Smaller model for sub-tasks.** Use Haiku, Mini, or Flash for classification, extraction, routing. Save the frontier model for the hard step. See [Routing](/docs/tech/ai/routing).
+3. **Shorter context.** Summarize history past N turns. Retrieve fewer chunks. Strip whitespace from tool outputs.
+4. **Stop conditions.** Hard cap on tool-call iterations. Hard cap on tokens per session.
+5. **Batch API.** 50% off if you can tolerate ~24h latency. Good for backfills and evals.
+
+## Per-user budgets
+
+For consumer apps, set a per-user daily token budget and surface it. Pick one of three: hard cap, soft cap with a warning, or graceful degradation to a smaller model. Without this, one power user can eat a month of your margin.
+
+## Reading
+
+- [Anthropic: Prompt caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching)
+- [OpenAI: Batch API](https://platform.openai.com/docs/guides/batch)
+- [Helicone: LLM cost comparison](https://www.helicone.ai/llm-cost)
