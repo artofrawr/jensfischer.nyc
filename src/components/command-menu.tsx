@@ -37,11 +37,14 @@ export function CommandMenu({ items }: CommandMenuProps) {
     return () => document.removeEventListener("keydown", down)
   }, [])
 
-  const runCommand = React.useCallback((command: () => void) => {
-    setOpen(false)
-    closeMobileNav()
-    command()
-  }, [closeMobileNav])
+  const runCommand = React.useCallback(
+    (command: () => void) => {
+      setOpen(false)
+      closeMobileNav()
+      command()
+    },
+    [closeMobileNav],
+  )
 
   const groups = React.useMemo(() => {
     const map = new Map<string, SearchableItem[]>()
@@ -64,7 +67,7 @@ export function CommandMenu({ items }: CommandMenuProps) {
         )}
       >
         <SearchIcon className="size-3.5 shrink-0" />
-        <span className="hidden lg:inline-flex">Search docs...</span>
+        <span className="hidden lg:inline-flex">Search...</span>
         <span className="inline-flex lg:hidden">Search...</span>
         <kbd className="pointer-events-none ml-auto hidden h-5 select-none items-center gap-0.5 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
           <span className="text-xs">&#8984;</span>K
@@ -98,9 +101,7 @@ export function CommandMenu({ items }: CommandMenuProps) {
                     <Command.Item
                       key={item.url}
                       value={`${item.title} ${item.description ?? ""}`}
-                      onSelect={() =>
-                        runCommand(() => router.push(item.url))
-                      }
+                      onSelect={() => runCommand(() => router.push(item.url))}
                       className="relative flex cursor-default items-center gap-2 rounded-md px-2 py-2.5 text-sm outline-none select-none data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground"
                     >
                       <FileTextIcon className="size-4 shrink-0 opacity-60" />

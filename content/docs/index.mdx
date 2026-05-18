@@ -1,7 +1,70 @@
 ---
 title: Introduction
+description: Notes, references, and a working thesis on building AI products.
 ---
 
-A repository of personal knowledge that I update from time to time when I find interesting links or research a topic.
+This is a working notebook — mostly about AI product engineering, with detours into the things I think about when I'm not writing code. Use the sidebar to wander.
 
-Use the sidebar to get started.
+What follows is a thesis I keep coming back to. It's the lens behind most of the notes in this garden, and behind the products on the [showcase](/showcase) page.
+
+---
+
+## What I believe about building AI products in 2026
+
+A working thesis. Strong opinions, loosely held — but mostly strong.
+
+### 1. The model is not the moat
+
+In 2023 the model choice was a defining product decision. In 2026 it is a configuration value. Capability differences between frontier models matter for a six-week window after each release and then collapse. Anyone betting their company on "we get to GPT-N first" is fighting on terrain that flattens every quarter.
+
+The durable moats are the ones that don't sit inside the model: **proprietary data, distribution, taste, evals, tool design, and the operating loop around the model**. The product is what wraps the model, not the model itself.
+
+### 2. Tools are the product
+
+An agent is a small loop. The orchestration layer is twenty lines of code. The framework is usually overkill. What actually determines whether an agent is useful is the set of tools it has, how cleanly they're scoped, what they return, and how forgiving they are when the model misuses them.
+
+Most "agent" startups I look at are spending 90% of their effort on the wrong layer. The interesting work is in tool design — what side effects to expose, what to keep deterministic, what to summarize before it lands in context, when to fall back to a human. That's where the differentiation lives.
+
+### 3. Context is the bottleneck, not capability
+
+Most AI product failures I've seen aren't model failures. They're context failures: the model didn't have the right information, or had too much of the wrong information, or had the right information in the wrong shape. Improving context routinely gives bigger gains than upgrading the model.
+
+This makes retrieval, summarization, memory, and conversation-state management the highest-leverage engineering work on most AI teams. It's also the work that's least glamorous and most often skipped.
+
+### 4. Evals are the actual unlock
+
+Without evals, you ship by vibe. With evals, you can change models, refactor prompts, swap retrieval strategies, and ship with confidence. Teams without evals make slow, scared changes. Teams with evals iterate ten times faster on the parts that matter.
+
+The cost of bootstrapping an eval setup is one engineer for one week. The cost of _not_ having one compounds for the life of the product. This is the single most underrated piece of infrastructure in AI product teams today.
+
+### 5. The generalist product engineer wins
+
+AI tooling has collapsed the distance between disciplines. A single engineer with taste can now go from schema design to API to UI to eval to deploy in a day. The most valuable person on an AI team in 2026 isn't a specialist in any one layer — it's the person who can move fluidly across the whole stack and hold the whole product in their head.
+
+This is bad news for orgs that have invested in deep functional silos. It is very good news for small teams.
+
+### 6. Taste is the new bottleneck
+
+When generating code costs nothing, the constraint moves upstream. What should we build? What does "good" look like? Where do we stop?
+
+These are taste questions. They are not solvable by more compute. The teams that will win the next five years are the ones whose taste is calibrated through real product work — not the ones with the biggest token budget.
+
+### 7. Speed of iteration > everything else
+
+The single best predictor I know for AI product success is the wall-clock time between "we should try X" and "X is in front of real users." Teams that can compress that loop to hours rather than weeks compound. Teams that can't, drift.
+
+Everything I build — from evals to UI scaffolding to tooling for Claude Code — is in service of compressing that loop.
+
+### 8. The interface layer is wide open
+
+Chat was the first interface for LLMs. It will not be the dominant one for long. Generative UI, agentic workflows, voice, ambient assistance, and interfaces that don't exist yet are all in play. The teams that figure out what the _post-chat_ interface should look like for their domain will own that domain.
+
+This is the part I'm most excited about.
+
+---
+
+## So what?
+
+Each of these implies a way of working: invest in evals before models, in tools before frameworks, in context before capability, in taste before scale, and in generalist teams over deep silos. The notes in the sidebar are mostly me working through specific corners of this thesis — agentic stack, RAG, prompting, MCP, claude code, and so on.
+
+If any of this is wrong, I'd like to know. The whole point of writing it down is so I can be embarrassed by it in two years.
