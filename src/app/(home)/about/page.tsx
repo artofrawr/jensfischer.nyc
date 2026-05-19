@@ -132,15 +132,16 @@ export default function About() {
       <section className="py-12 max-w-screen-lg mx-auto">
         <h2 className="text-2xl font-medium pb-2">Clients</h2>
         <p className="text-xl font-regular pb-10 text-muted-foreground max-w-prose">
-          I have been lucky to work with - and learn from - many great people
-          and companies across diverse industries. Check out the{" "}
+          Over the last two decades I've had the privilege of working with - and
+          learning from - startups, Fortune 500's and all points in between.
+          Check out the{" "}
           <Link
             href="/showcase"
             className="underline underline-offset-4 hover:text-foreground"
           >
             Showcase
           </Link>{" "}
-          page for a selection of case studies.
+          page for a few selected case studies.
         </p>
         <div className="grid grid-flow-row-dense grid-cols-2 lg:grid-cols-4 client-logos">
           <div>
@@ -197,13 +198,13 @@ export default function About() {
       <section className="py-12 max-w-screen-lg mx-auto">
         <h2 className="text-2xl font-medium pb-2">Contact</h2>
         <p className="text-xl text-muted-foreground max-w-prose pb-6 leading-relaxed">
-          Reach out to connect or collaborate. You can reach me via
+          Reach out to connect or collaborate. You can reach me via{" "}
           <Link
             href="https://www.linkedin.com/in/jensfischer-nyc/"
             className="underline underline-offset-4 hover:text-foreground"
           >
             LinkedIn
-          </Link>
+          </Link>{" "}
           or Email.
         </p>
       </section>

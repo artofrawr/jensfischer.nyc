@@ -5,8 +5,11 @@ import {
 } from "fumadocs-mdx/config"
 import { z } from "zod"
 
+import remarkCoverImage from "./src/lib/remark-cover-image"
+
 export default defineConfig({
   mdxOptions: {
+    remarkPlugins: [remarkCoverImage],
     rehypeCodeOptions: {
       themes: {
         light: "github-light",
@@ -30,6 +33,7 @@ export const showcase = defineDocs({
       tags: z.array(z.string()).optional(),
       date: z.date(),
       url: z.string().optional(),
+      cover: z.string(),
     }),
   },
 })
