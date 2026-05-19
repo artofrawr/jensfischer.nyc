@@ -1,4 +1,9 @@
-import { defineConfig, defineDocs } from "fumadocs-mdx/config"
+import {
+  defineConfig,
+  defineDocs,
+  frontmatterSchema,
+} from "fumadocs-mdx/config"
+import { z } from "zod"
 
 export default defineConfig({
   mdxOptions: {
@@ -16,4 +21,15 @@ export default defineConfig({
 
 export const docs = defineDocs({
   dir: "content/docs",
+})
+
+export const showcase = defineDocs({
+  dir: "content/showcase",
+  docs: {
+    schema: frontmatterSchema.extend({
+      tags: z.array(z.string()).optional(),
+      date: z.date(),
+      url: z.string().optional(),
+    }),
+  },
 })

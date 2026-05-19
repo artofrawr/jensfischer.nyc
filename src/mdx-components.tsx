@@ -1,5 +1,6 @@
 import * as React from "react"
 import Link from "next/link"
+import Image, { type StaticImageData } from "next/image"
 
 import { cn } from "@/lib/utils"
 import { CodeBlock } from "@/components/code-block"
@@ -112,6 +113,34 @@ export const mdxComponents = {
     return <code className={className} {...props} />
   },
   pre: (props: React.ComponentProps<"pre">) => <CodeBlock {...props} />,
+  img: ({
+    src,
+    alt,
+    className,
+    ...props
+  }: Omit<React.ComponentProps<"img">, "src"> & {
+    src?: string | StaticImageData
+  }) => {
+    if (src && typeof src === "object") {
+      return (
+        <Image
+          src={src}
+          alt={alt ?? ""}
+          className={cn("my-8 h-auto w-full rounded-lg", className)}
+          {...(props as Omit<React.ComponentProps<typeof Image>, "src" | "alt">)}
+        />
+      )
+    }
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt={alt ?? ""}
+        className={cn("my-8 h-auto w-full rounded-lg", className)}
+        {...props}
+      />
+    )
+  },
   Link: ({ className, ...props }: React.ComponentProps<typeof Link>) => (
     <Link
       className={cn("font-medium underline underline-offset-4", className)}

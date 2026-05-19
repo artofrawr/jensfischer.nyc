@@ -1,44 +1,16 @@
-import { ExternalLinkIcon } from "lucide-react"
+import Link from "next/link"
+import { ArrowRightIcon, ExternalLinkIcon } from "lucide-react"
 
-const products = [
-  {
-    title: "Maude",
-    description:
-      "An agile workflow for planning and building products in the AI era.",
-    tags: ["saas", "ai", "workflow"],
-    url: "https://www.dearmaude.ai",
-  },
-  {
-    title: "Toro UI",
-    description:
-      "A UI framework, with best-in-class support for AI coding agents.",
-    tags: ["ui", "framework", "ai"],
-    url: "https://www.toro-ui.com",
-  },
-  {
-    title: "Claude Control",
-    description:
-      "A public marketplace for Claude Code plugins, skills, and extensions.",
-    tags: ["open source", "claude code"],
-    url: "https://github.com/artofrawr/claude-control",
-  },
-  // {
-  //   title: "Karaoke",
-  //   description:
-  //     "A small demo build for Google, to showcase Chrome's Web Audio API.",
-  //   tags: ["demo", "web audio api", "three.js"],
-  //   url: "https://demo-karaoke.artofrawr.com",
-  // },
-  // {
-  //   title: "Second Screen",
-  //   description:
-  //     "Proof of concept for a second screen experience, implemented with Next.js and socket.io",
-  //   tags: ["demo", "next.js", "websockets"],
-  //   url: "https://demo-secondscreen.artofrawr.com",
-  // },
-]
+import { showcaseSource } from "@/lib/showcase-source"
+
+const cardClassName =
+  "group flex flex-col rounded-lg border border-border p-5 transition-colors hover:border-foreground/25 hover:bg-muted/50"
 
 export default function Showcase() {
+  const products = [...showcaseSource.getPages()].sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+  )
+
   return (
     <main className="max-w-screen-lg mx-auto px-8 pt-8">
       <div className="py-20 max-w-screen-lg mx-auto">
@@ -48,35 +20,62 @@ export default function Showcase() {
         </p>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
-            <a
-              key={product.title}
-              href={product.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex flex-col rounded-lg border border-border p-5 transition-colors hover:border-foreground/25 hover:bg-muted/50"
-            >
-              <div className="flex items-start justify-between gap-2">
-                <h2 className="text-lg font-medium text-foreground">
-                  {product.title}
-                </h2>
-                <ExternalLinkIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 mt-1" />
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                {product.description}
-              </p>
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                {product.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </a>
-          ))}
+          {products.map((page) => {
+            const { title, description, tags, url } = page.data
+            const isExternal = Boolean(url)
+
+            const inner = (
+              <>
+                <div className="flex items-start justify-between gap-2">
+                  <h2 className="text-lg font-medium text-foreground">
+                    {title}
+                  </h2>
+                  {isExternal ? (
+                    <ExternalLinkIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 mt-1" />
+                  ) : (
+                    <ArrowRightIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 mt-1" />
+                  )}
+                </div>
+                {description && (
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                    {description}
+                  </p>
+                )}
+                {tags && tags.length > 0 && (
+                  <div className="mt-4 flex flex-wrap gap-1.5">
+                    {tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </>
+            )
+
+            if (isExternal && url) {
+              return (
+                <a
+                  key={page.url}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cardClassName}
+                >
+                  {inner}
+                </a>
+              )
+            }
+
+            return (
+              <Link key={page.url} href={page.url} className={cardClassName}>
+                {inner}
+              </Link>
+            )
+          })}
         </div>
       </div>
     </main>
