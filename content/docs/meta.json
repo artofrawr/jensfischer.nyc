@@ -2,12 +2,16 @@
   "pages": [
     "index",
     "---Tech---",
-    "tech/ai",
     "tech/awesome-list",
-    "tech/best-practices",
+    "tech/ai",
+    "tech/tools",
+    "tech/workflow",
+    "---Product---",
+    "product/analytics",
     "---Miscellaneous---",
     "misc/chess",
     "misc/discipline",
+    "misc/finance",
     "misc/fitness",
     "misc/nutrition"
   ]

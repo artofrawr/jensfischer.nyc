@@ -1,24 +1,32 @@
-import { showcaseSource } from "@/lib/showcase-source"
-import { ShowCaseCover } from "@/components/showcase-cover"
+import { ShowcaseGrid } from "@/components/showcase-grid"
+import type { ShowcaseItem } from "@/components/showcase-cover"
+import { getShowcaseCover, showcaseSource } from "@/lib/showcase-source"
 
 export default function Showcase() {
-  const caseStudies = [...showcaseSource.getPages()].sort(
-    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-  )
+  const items: ShowcaseItem[] = [...showcaseSource.getPages()]
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    .flatMap((page) => {
+      const cover = getShowcaseCover(page)
+      if (!cover) return []
+      return [
+        {
+          url: page.url,
+          title: page.data.title,
+          description: page.data.description,
+          externalUrl: page.data.url,
+          cover,
+        },
+      ]
+    })
 
   return (
-    <main className="max-w-screen-lg mx-auto px-8 pt-8">
-      <div className="py-20 max-w-screen-lg mx-auto">
+    <main className="container mx-auto px-6 pt-8">
+      <div className="py-20">
         <h1 className="text-4xl font-normal pb-2">Showcase</h1>
         <p className="text-xl text-muted-foreground max-w-prose pb-12">
           A collection of projects &amp; products I&apos;ve shipped.
         </p>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {caseStudies.map((cs) => (
-            <ShowCaseCover key={`showcase-cover-${cs.url}`} {...cs} />
-          ))}
-        </div>
+        <ShowcaseGrid items={items} />
       </div>
     </main>
   )

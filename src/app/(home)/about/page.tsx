@@ -132,9 +132,9 @@ export default function About() {
       <section className="py-12 max-w-screen-lg mx-auto">
         <h2 className="text-2xl font-medium pb-2">Clients</h2>
         <p className="text-xl font-regular pb-10 text-muted-foreground max-w-prose">
-          Over the last two decades I've had the privilege of working with - and
-          learning from - startups, Fortune 500's and all points in between.
-          Check out the{" "}
+          Over the years I've had the privilege of working with - and learning
+          from - startups, Fortune 500's and all points in between. Check out
+          the{" "}
           <Link
             href="/showcase"
             className="underline underline-offset-4 hover:text-foreground"

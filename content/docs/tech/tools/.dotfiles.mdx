@@ -1,0 +1,37 @@
+---
+title: .dotfiles
+description: There's no place like $HOME.
+---
+
+- [dotfiles](https://www.github.com/artofrawr/dotfiles)
+
+## Core Dependencies
+
+- [chezmoi](https://www.chezmoi.io/) - my dotfiles manager of choice
+- [homebrew](https://brew.sh/) - package manager for macOS
+- [mise](https://mise.en.dev/) - dev environment and tools version management
+- [kitty](https://sw.kovidgoyal.net/kitty/) - terminal emulator
+- [oh my zsh](https://github.com/ohmyzsh/ohmyzsh/) - open source framework for managing zsh
+- [zsh autocomplete](https://github.com/marlonrichert/zsh-autocomplete) - autocomplete plugin for zsh
+
+## chezmoi cheatsheet
+
+```bash
+# Edit a tracked file (opens the SOURCE version, not the live one)
+chezmoi edit ~/.zshrc
+
+# See what would change before touching your home dir
+chezmoi diff
+
+# Apply the source state to your home directory
+chezmoi apply -v
+
+# Pull upstream changes and apply them in one step
+chezmoi update -v
+
+# Did you tweak the live file directly? Pull that change back into the source
+chezmoi re-add
+
+# cd into chezmoi dotfiles directory
+chezmoi cd
+```

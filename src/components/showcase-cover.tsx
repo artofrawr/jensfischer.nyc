@@ -1,50 +1,55 @@
 import { ArrowRightIcon, ExternalLinkIcon } from "lucide-react"
+import Image from "next/image"
+import type { StaticImageData } from "next/image"
 import Link from "next/link"
 
-import type { ShowcasePage } from "@/lib/showcase-source"
+export type ShowcaseItem = {
+  url: string
+  title: string
+  description?: string
+  externalUrl?: string
+  cover: StaticImageData
+}
 
-const cardClassName =
-  "group flex flex-col rounded-lg border border-border p-5 transition-colors hover:border-foreground/25 hover:bg-muted/50"
+const cardClassName = "group relative block aspect-square overflow-hidden"
 
-export function ShowCaseCover(page: ShowcasePage) {
-  const { title, description, tags, url } = page.data
-  const isExternal = Boolean(url)
+export function ShowCaseCover({
+  url,
+  title,
+  description,
+  externalUrl,
+  cover,
+}: ShowcaseItem) {
+  const isExternal = Boolean(externalUrl)
+  const Icon = isExternal ? ExternalLinkIcon : ArrowRightIcon
 
   const inner = (
     <>
-      <div className="flex items-start justify-between gap-2">
-        <h2 className="text-lg font-medium text-foreground">{title}</h2>
-        {isExternal ? (
-          <ExternalLinkIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 mt-1" />
-        ) : (
-          <ArrowRightIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 mt-1" />
+      <Image
+        src={cover}
+        alt={title}
+        sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw"
+        placeholder="blur"
+        className="block size-full object-cover"
+      />
+      <div className="pointer-events-none absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/30 to-transparent p-5 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+        <div className="flex items-start justify-between gap-2">
+          <h2 className="text-lg font-medium text-white">{title}</h2>
+          <Icon className="mt-1 size-4 shrink-0 text-white" />
+        </div>
+        {description && (
+          <p className="mt-2 text-sm leading-relaxed text-white/80">
+            {description}
+          </p>
         )}
       </div>
-      {description && (
-        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-          {description}
-        </p>
-      )}
-      {tags && tags.length > 0 && (
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
     </>
   )
 
-  if (isExternal && url) {
+  if (isExternal && externalUrl) {
     return (
       <a
-        key={page.url}
-        href={url}
+        href={externalUrl}
         target="_blank"
         rel="noopener noreferrer"
         className={cardClassName}
@@ -55,7 +60,7 @@ export function ShowCaseCover(page: ShowcasePage) {
   }
 
   return (
-    <Link key={page.url} href={page.url} className={cardClassName}>
+    <Link href={url} className={cardClassName}>
       {inner}
     </Link>
   )
