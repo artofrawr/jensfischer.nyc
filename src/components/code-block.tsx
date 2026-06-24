@@ -50,7 +50,7 @@ export function CodeBlock({
       <pre
         ref={ref}
         className={cn(
-          "overflow-x-auto px-4 py-4 font-mono text-[13px] leading-relaxed",
+          "overflow-x-auto px-4 py-4 font-mono text-[15px] leading-relaxed [&_code]:font-mono",
           className,
         )}
         {...props}

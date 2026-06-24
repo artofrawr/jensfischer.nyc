@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Inter, Geist_Mono } from "next/font/google"
+import { Inter, Poppins, Inconsolata } from "next/font/google"
 import "./globals.css"
 import {
   SiteHeader,
@@ -15,13 +15,19 @@ import { CommandMenu } from "@/components/command-menu"
 import { getSearchableItems } from "@/lib/search"
 import { ThemeProvider } from "next-themes"
 
+const poppins = Poppins({
+  variable: "--font-headline",
+  subsets: ["latin"],
+  weight: ["600"],
+})
+
 const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
 })
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inconsolata = Inconsolata({
+  variable: "--font-mono",
   subsets: ["latin"],
 })
 
@@ -37,7 +43,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${inter.variable} ${inconsolata.variable} ${poppins.variable} antialiased font-sans`}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

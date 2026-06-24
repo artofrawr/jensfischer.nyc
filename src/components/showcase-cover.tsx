@@ -16,12 +16,10 @@ const cardClassName = "group relative block aspect-square overflow-hidden"
 export function ShowCaseCover({
   url,
   title,
-  description,
   externalUrl,
   cover,
 }: ShowcaseItem) {
   const isExternal = Boolean(externalUrl)
-  const Icon = isExternal ? ExternalLinkIcon : ArrowRightIcon
 
   const inner = (
     <>
@@ -30,18 +28,12 @@ export function ShowCaseCover({
         alt={title}
         sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw"
         placeholder="blur"
-        className="block size-full object-cover"
+        className="block size-full object-cover transition-transform duration-500 ease-out group-hover:scale-120 group-hover:duration-[2000ms]"
       />
-      <div className="pointer-events-none absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/30 to-transparent p-5 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+      <div className="pointer-events-none absolute inset-0 flex flex-col justify-start bg-gradient-to-b from-black/80 via-black/30 to-transparent p-5">
         <div className="flex items-start justify-between gap-2">
           <h2 className="text-lg font-medium text-white">{title}</h2>
-          <Icon className="mt-1 size-4 shrink-0 text-white" />
         </div>
-        {description && (
-          <p className="mt-2 text-sm leading-relaxed text-white/80">
-            {description}
-          </p>
-        )}
       </div>
     </>
   )
