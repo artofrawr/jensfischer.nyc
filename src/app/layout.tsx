@@ -14,6 +14,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { CommandMenu } from "@/components/command-menu"
 import { getSearchableItems } from "@/lib/search"
 import { ThemeProvider } from "next-themes"
+import { SiteFooter } from "@/components/site-footer"
 
 const poppins = Poppins({
   variable: "--font-headline",
@@ -140,6 +141,7 @@ export default function RootLayout({
             </SiteHeaderMobileNav>
           </SiteHeader>
           {children}
+          <SiteFooter />
         </ThemeProvider>
       </body>
     </html>

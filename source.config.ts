@@ -3,11 +3,13 @@ import {
   defineDocs,
   frontmatterSchema,
 } from "fumadocs-mdx/config"
+import lastModified from "fumadocs-mdx/plugins/last-modified"
 import { z } from "zod"
 
 import remarkCoverImage from "./src/lib/remark-cover-image"
 
 export default defineConfig({
+  plugins: [lastModified({ versionControl: "git" })],
   mdxOptions: {
     remarkPlugins: [remarkCoverImage],
     rehypeCodeOptions: {
@@ -34,6 +36,7 @@ export const showcase = defineDocs({
       date: z.date(),
       url: z.string().optional(),
       cover: z.string(),
+      featured: z.boolean().default(false),
     }),
   },
 })
