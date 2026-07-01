@@ -25,7 +25,7 @@ The model only knows what's in the context window. Everything else is invisible.
 
 ## Patterns
 
-- **Cacheable prefix.** Put the static parts (system prompt, tool definitions, few-shot examples) at the top so prompt caching works. See [Budgets](/docs/tech/ai/budgets).
+- **Cacheable prefix.** Put the static parts (system prompt, tool definitions, few-shot examples) at the top so prompt caching works. See [Budgets](/knowledge/tech/ai/budgets).
 - **Structured tool results.** Return JSON the model can re-read, not free text it has to re-parse.
 - **Rolling summary.** Every N turns, replace history with a model-generated summary plus the last 2 turns verbatim.
 - **Retrieved-then-grounded.** When citing sources, paste the source inline with an ID and ask the model to cite the ID. Don't trust it to remember.

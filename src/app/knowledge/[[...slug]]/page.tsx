@@ -59,8 +59,8 @@ export default async function Page(props: {
       <Breadcrumb className="mb-4">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink render={<Link href="/docs" />}>
-              Documentation
+            <BreadcrumbLink render={<Link href="/knowledge" />}>
+              Knowledge
             </BreadcrumbLink>
           </BreadcrumbItem>
           {breadcrumbs.map((item, index) => {
@@ -73,7 +73,7 @@ export default async function Page(props: {
                     <BreadcrumbPage>{item.name}</BreadcrumbPage>
                   ) : (
                     <BreadcrumbLink
-                      render={<Link href={item.url ?? "/docs"} />}
+                      render={<Link href={item.url ?? "/knowledge"} />}
                     >
                       {item.name}
                     </BreadcrumbLink>

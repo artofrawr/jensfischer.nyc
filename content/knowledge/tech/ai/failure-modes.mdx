@@ -25,11 +25,11 @@ The novel ways an LLM app can fail don't show up in unit tests. They show up in 
 
 - **Context overflow.** Conversation grew past the window. Truncation rules need to exist before this happens, not after.
 - **Rate limits.** Bursty traffic + a single API key. Use a queue or a routing layer.
-- **Cost runaway.** A bug causes one user's agent to loop forever. See [Budgets](/docs/tech/ai/budgets).
+- **Cost runaway.** A bug causes one user's agent to loop forever. See [Budgets](/knowledge/tech/ai/budgets).
 - **Stale cache.** Cached prompt prefix becomes wrong after a system change. Invalidate explicitly.
 
 ## Adversarial failures
 
-- **Prompt injection.** Hostile user input or document content rewrites instructions. See [Security](/docs/tech/ai/security).
+- **Prompt injection.** Hostile user input or document content rewrites instructions. See [Security](/knowledge/tech/ai/security).
 - **Data exfiltration via tools.** A tool returns secrets to a user who shouldn't see them.
 - **Jailbreaks.** User talks the model out of its system prompt. Don't put real secrets there in the first place.

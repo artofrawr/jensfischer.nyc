@@ -16,7 +16,7 @@ A small AI feature can cost $0.001 per call or $1.00 depending on choices that l
 ## Levers in order of impact
 
 1. **Prompt caching.** Anthropic and OpenAI both support it. For repeated system prompts or RAG context this can cut input cost by 90%.
-2. **Smaller model for sub-tasks.** Use Haiku, Mini, or Flash for classification, extraction, routing. Save the frontier model for the hard step. See [Routing](/docs/tech/ai/routing).
+2. **Smaller model for sub-tasks.** Use Haiku, Mini, or Flash for classification, extraction, routing. Save the frontier model for the hard step. See [Routing](/knowledge/tech/ai/routing).
 3. **Shorter context.** Summarize history past N turns. Retrieve fewer chunks. Strip whitespace from tool outputs.
 4. **Stop conditions.** Hard cap on tool-call iterations. Hard cap on tokens per session.
 5. **Batch API.** 50% off if you can tolerate ~24h latency. Good for backfills and evals.

@@ -75,7 +75,7 @@ export default function RootLayout({
               <SiteHeaderNavLink href="/showcase" exact>
                 Showcase
               </SiteHeaderNavLink>
-              <SiteHeaderNavLink href="/docs">Knowledge</SiteHeaderNavLink>
+              <SiteHeaderNavLink href="/knowledge">Knowledge</SiteHeaderNavLink>
               <SiteHeaderNavLink href="/about" exact>
                 About
               </SiteHeaderNavLink>
@@ -128,7 +128,7 @@ export default function RootLayout({
               <SiteHeaderMobileNavLink href="/showcase" exact>
                 Showcase
               </SiteHeaderMobileNavLink>
-              <SiteHeaderMobileNavLink href="/docs">
+              <SiteHeaderMobileNavLink href="/knowledge">
                 Knowledge
               </SiteHeaderMobileNavLink>
               <SiteHeaderMobileNavLink href="/about" exact>

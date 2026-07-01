@@ -54,7 +54,7 @@ async function runAgent(messages, tools) {
 
 - **The loop is small.** Most agent code is a 20-line `while` loop. The framework is rarely the hard part.
 - **Tools are the product.** The value of an agent is its tools. Spend time on tool design, not orchestration.
-- **Context is the bottleneck.** What you put in the prompt matters more than which model you pick. See [Context](/docs/tech/ai/context).
+- **Context is the bottleneck.** What you put in the prompt matters more than which model you pick. See [Context](/knowledge/tech/ai/context).
 - **Long horizons are hard.** Agents that take 10+ steps fail in ways short ones never do. Test long traces explicitly.
 - **State leaks everywhere.** Tool results, scratchpads, errors. All of it ends up in context. Plan for it.
 
