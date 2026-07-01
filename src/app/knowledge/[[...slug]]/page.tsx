@@ -55,35 +55,37 @@ export default async function Page(props: {
   })
 
   return (
-    <DocsContent toc={doc.toc}>
-      <Breadcrumb className="mb-4">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink render={<Link href="/knowledge" />}>
-              Knowledge
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          {breadcrumbs.map((item, index) => {
-            const isLast = index === breadcrumbs.length - 1
-            return (
-              <Fragment key={index}>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  {isLast ? (
-                    <BreadcrumbPage>{item.name}</BreadcrumbPage>
-                  ) : (
-                    <BreadcrumbLink
-                      render={<Link href={item.url ?? "/knowledge"} />}
-                    >
-                      {item.name}
-                    </BreadcrumbLink>
-                  )}
-                </BreadcrumbItem>
-              </Fragment>
-            )
-          })}
-        </BreadcrumbList>
-      </Breadcrumb>
+    <DocsContent toc={doc.toc} hideToc={page.path === "index.mdx"}>
+      {page.path !== "index.mdx" && (
+        <Breadcrumb className="mb-4">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink render={<Link href="/knowledge" />}>
+                Knowledge
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            {breadcrumbs.map((item, index) => {
+              const isLast = index === breadcrumbs.length - 1
+              return (
+                <Fragment key={index}>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    {isLast ? (
+                      <BreadcrumbPage>{item.name}</BreadcrumbPage>
+                    ) : (
+                      <BreadcrumbLink
+                        render={<Link href={item.url ?? "/knowledge"} />}
+                      >
+                        {item.name}
+                      </BreadcrumbLink>
+                    )}
+                  </BreadcrumbItem>
+                </Fragment>
+              )
+            })}
+          </BreadcrumbList>
+        </Breadcrumb>
+      )}
 
       <div className="flex flex-col gap-2">
         <h1 className="text-[28px] font-bold text-foreground">{doc.title}</h1>
@@ -99,7 +101,6 @@ export default async function Page(props: {
       <div className="prose-doc">
         <MDX components={mdxComponents} />
       </div>
-
     </DocsContent>
   )
 }
