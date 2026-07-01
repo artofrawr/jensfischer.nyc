@@ -85,9 +85,9 @@ function SiteFooter() {
               Jens Fischer
             </div>
             <p className="mt-4 text-sm text-background/60">
-              Full stack product engineer and entrepreneur based in NYC. Notes
-              on building AI products, and the things I think about when I&apos;m
-              not writing code.
+              Full stack product engineer and entrepreneur based in NYC. Over
+              two decades building digital experiences and products at the
+              intersection of design and engineering.
             </p>
           </div>
 
