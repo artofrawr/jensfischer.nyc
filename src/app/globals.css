@@ -125,6 +125,13 @@
   border-left: 1px solid var(--border);
 }
 
+/* Pin the footer to the light-theme palette so it stays dark-bg / bright-text
+   in both light and dark mode (bg-foreground / text-background never flip). */
+.site-footer {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+}
+
 .client-logos div {
   position: relative;
   display: block;
@@ -141,8 +148,6 @@
   transform: translate(-50%, -50%);
 }
 
-@media (prefers-color-scheme: dark) {
-  .dark .client-logos div img {
-    filter: invert(1);
-  }
+.dark .client-logos div img {
+  filter: invert(1);
 }

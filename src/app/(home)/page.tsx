@@ -50,32 +50,58 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="pb-20">
-        <div className="border-b flex justify-between">
+      <div className="pb-30">
+        <div className="flex justify-between mb-6">
           <h2 className={cn(fontLarge, "text-xl")}>Recent Writing</h2>
-          <a href="/knowledge" className="flex items-center">
+          <a href="/knowledge" className="group flex items-center">
             <span className="text-md">View all</span>
-            <ArrowRightIcon className="pl-2 size-6" />
+            <ArrowRightIcon className="pl-2 size-6 transition-transform group-hover:translate-x-0.5" />
           </a>
         </div>
 
-        <ul>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-l">
           {recentDocs.map((page) => (
-            <li key={page.url}>
-              <Link href={page.url}>{page.data.title}</Link>
-            </li>
+            <Link
+              key={page.url}
+              href={page.url}
+              className="group flex flex-col gap-2 border-r border-b p-8 transition-colors hover:bg-muted"
+            >
+              <h3 className="font-headline font-semibold tracking-tight">
+                {page.data.title}
+              </h3>
+              {page.data.description && (
+                <p className="text-sm text-ring line-clamp-3">
+                  {page.data.description}
+                </p>
+              )}
+              {page.data.lastModified && (
+                <p className="mt-auto pt-2 text-sm text-ring">
+                  {page.data.lastModified.toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </p>
+              )}
+            </Link>
           ))}
-        </ul>
+        </div>
       </div>
 
-      <div className="pb-20">
+      <div className="pb-30">
+        <div className="flex justify-between mb-6">
+          <h2 className={cn(fontLarge, "text-xl")}>Selected Work</h2>
+          <a href="/knowledge" className="group flex items-center">
+            <span className="text-md">View all</span>
+            <ArrowRightIcon className="pl-2 size-6 transition-transform group-hover:translate-x-0.5" />
+          </a>
+        </div>
         <ShowcaseGrid items={items} />
       </div>
 
       <section className="py-20 mx-auto">
-        <p className={cn("pb-20", fontLarge)}>
-          Over the years I've had the privilege of working with - and learning
-          from - early stage startups, Big Tech and all points in between.
+        <p className={cn("pb-20", fontLarge, "text-ring")}>
+          Over the years I've had the privilege of working with and learning
+          from startups, big tech and all points in between.
         </p>
         <div className="grid grid-flow-row-dense grid-cols-2 lg:grid-cols-4 client-logos">
           <div>
