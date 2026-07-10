@@ -53,7 +53,7 @@ export default function Home() {
 
       <div className="pb-30">
         <div className="flex justify-between mb-6">
-          <h2 className={cn(fontLarge, "text-xl")}>Recent Writing</h2>
+          <h2 className={cn(fontLarge, "text-xl")}>Latest Updates</h2>
           <a
             href="/knowledge"
             className="group -mr-3 flex items-center rounded-md px-3 py-1.5 transition-colors hover:bg-muted"
