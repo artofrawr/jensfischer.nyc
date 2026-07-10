@@ -12,7 +12,8 @@ dist
 build
 
 # Git and IDE
-.git
+# NOTE: .git must stay in the build context — fumadocs-mdx's last-modified
+# plugin (versionControl: "git") reads git history during `next build`.
 .gitignore
 .cursor
 .vscode

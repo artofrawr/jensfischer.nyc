@@ -14,6 +14,8 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 # Build the application
 FROM base AS builder
 WORKDIR /app
+# git is required by fumadocs-mdx's last-modified plugin (versionControl: "git")
+RUN apk add --no-cache git
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN mkdir -p public
