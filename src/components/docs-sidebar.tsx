@@ -30,8 +30,6 @@ export function DocsSidebar({
   className,
   ...props
 }: React.ComponentProps<"aside"> & { tree: PageTree }) {
-  const pathname = usePathname()
-
   return (
     <aside
       className={cn(
@@ -42,7 +40,15 @@ export function DocsSidebar({
     >
       <nav className="h-full overflow-y-auto overscroll-contain py-6 pe-6 ps-6 text-sm">
         <div className="flex flex-col gap-0.5">
-          {tree.children.map((node) => (
+          {tree.children
+            .filter(
+              (node) =>
+                !(
+                  node.type === "page" &&
+                  (node as PageNode).url === "/knowledge"
+                ),
+            )
+            .map((node) => (
             <TreeNode
               key={
                 node.type === "page"

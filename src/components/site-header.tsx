@@ -13,7 +13,7 @@ function SiteHeader({ className, children }: React.ComponentProps<"header">) {
     <header
       data-slot="site-header"
       className={cn(
-        "sticky top-0 z-50 w-full border-b bg-background/70 backdrop-blur-md supports-[backdrop-filter]:bg-background/70",
+        "sticky top-0 z-50 w-full border-b bg-background/70 backdrop-blur-md supports-[backdrop-filter]:bg-background/80",
         className,
       )}
     >
@@ -152,9 +152,7 @@ function SiteHeaderMobileNav({
             </div>
             <div className="border-t" />
             <MobileNavContext.Provider value={{ close: () => setOpen(false) }}>
-              <div className="container mx-auto px-6 pt-6">
-                {children}
-              </div>
+              <div className="container mx-auto px-6 pt-6">{children}</div>
             </MobileNavContext.Provider>
           </div>,
           document.body,

@@ -18,7 +18,7 @@ export function DocsToc({ toc }: DocsTocProps) {
     <aside className="sticky top-[calc(var(--header-height)+1px)] z-30 hidden h-[calc(100svh-var(--header-height)-1px)] w-(--toc-width) shrink-0 xl:block">
       <nav className="h-full overflow-y-auto overscroll-contain py-8 pe-4 ps-4">
         <p className="mb-2 text-[13px] font-semibold text-foreground">
-          On this page
+          On This Page
         </p>
         <ul className="relative flex flex-col">
           {toc.map((item) => {
@@ -44,6 +44,11 @@ export function DocsToc({ toc }: DocsTocProps) {
             )
           })}
         </ul>
+        <div className="pt-4">
+          <p className="mb-2 text-[13px] font-semibold text-foreground">
+            Share
+          </p>
+        </div>
       </nav>
     </aside>
   )

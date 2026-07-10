@@ -35,6 +35,15 @@ const inconsolata = Inconsolata({
 export const metadata: Metadata = {
   title: "Jens Fischer",
   description: "Full Stack Product Engineer and Entrepreneur based out of NYC.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
 }
 
 export default function RootLayout({
@@ -76,9 +85,9 @@ export default function RootLayout({
                 Showcase
               </SiteHeaderNavLink>
               <SiteHeaderNavLink href="/knowledge">Knowledge</SiteHeaderNavLink>
-              <SiteHeaderNavLink href="/about" exact>
+              {/* <SiteHeaderNavLink href="/about" exact>
                 About
-              </SiteHeaderNavLink>
+              </SiteHeaderNavLink> */}
             </SiteHeaderNav>
 
             <SiteHeaderActions className="hidden md:flex">
@@ -131,9 +140,9 @@ export default function RootLayout({
               <SiteHeaderMobileNavLink href="/knowledge">
                 Knowledge
               </SiteHeaderMobileNavLink>
-              <SiteHeaderMobileNavLink href="/about" exact>
+              {/* <SiteHeaderMobileNavLink href="/about" exact>
                 About
-              </SiteHeaderMobileNavLink>
+              </SiteHeaderMobileNavLink> */}
               <div className="mt-6 border-t pt-6 flex items-center gap-2">
                 <CommandMenu items={getSearchableItems()} />
                 <ThemeToggle />

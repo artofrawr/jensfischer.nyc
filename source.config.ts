@@ -36,6 +36,7 @@ export const showcase = defineDocs({
       date: z.date(),
       url: z.string().optional(),
       cover: z.string(),
+      coverLinkHide: z.boolean().optional(),
       featured: z.boolean().default(false),
     }),
   },

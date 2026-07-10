@@ -10,6 +10,7 @@ export type ShowcaseItem = {
   externalUrl?: string
   cover: StaticImageData
   featured?: boolean
+  coverLinkHide?: boolean
 }
 
 const cardClassName = "group relative block aspect-square overflow-hidden"
@@ -19,6 +20,7 @@ export function ShowCaseCover({
   title,
   externalUrl,
   cover,
+  coverLinkHide,
 }: ShowcaseItem) {
   const isExternal = Boolean(externalUrl)
 
@@ -29,16 +31,18 @@ export function ShowCaseCover({
         alt={title}
         sizes="(min-width: 1024px) 100vw, (min-width: 640px) 100vw"
         placeholder="blur"
-        className="block size-full object-cover"
+        className="block size-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
       />
-      <div className="pointer-events-none absolute inset-0 flex flex-col justify-start p-10">
-        <h2 className="flex items-center gap-2 font-headline font-semibold text-white text-2xl">
-          <span className="transition-all duration-300 ease-out group-hover:translate-x-2">
-            {title}
-          </span>
-          <ArrowRightIcon className="size-5 opacity-0 -translate-x-1 transition-all duration-300 ease-out group-hover:translate-x-2 group-hover:opacity-100" />
-        </h2>
-      </div>
+      {!coverLinkHide && (
+        <div className="pointer-events-none absolute inset-0 flex flex-col justify-start p-10">
+          <h2 className="flex items-center gap-2 font-headline font-semibold text-white text-2xl">
+            <span className="transition-all duration-300 ease-out group-hover:translate-x-2">
+              {title}
+            </span>
+            <ArrowRightIcon className="size-5 opacity-0 -translate-x-1 transition-all duration-300 ease-out group-hover:translate-x-2 group-hover:opacity-100" />
+          </h2>
+        </div>
+      )}
     </>
   )
 

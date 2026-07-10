@@ -1,7 +1,4 @@
-import { source } from "@/lib/source"
-import { DocsSidebar } from "@/components/docs-sidebar"
-
-export default function DocsLayout({
+export default function KnowledgeLayout({
   children,
 }: {
   children: React.ReactNode
@@ -17,7 +14,6 @@ export default function DocsLayout({
       }
     >
       <div className="container mx-auto border-x border-dashed bg-background flex w-full flex-1">
-        <DocsSidebar tree={source.pageTree} />
         {children}
       </div>
     </div>

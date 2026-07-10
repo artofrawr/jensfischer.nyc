@@ -8,13 +8,6 @@ type FooterLink = {
   external?: boolean
 }
 
-function firstPageIn(slug: string): string {
-  const page = source
-    .getPages()
-    .find((p) => p.url.startsWith(`/knowledge/${slug}/`))
-  return page?.url ?? "/knowledge"
-}
-
 function FooterColumn({
   title,
   links,
@@ -61,9 +54,9 @@ function SiteFooter() {
     .map((page) => ({ label: page.data.title, href: page.url }))
 
   const knowledgeLinks: FooterLink[] = [
-    { label: "Tech", href: firstPageIn("tech") },
-    { label: "Product", href: firstPageIn("product") },
-    { label: "Misc", href: firstPageIn("misc") },
+    { label: "Tech", href: "/knowledge/tech" },
+    { label: "Product", href: "/knowledge/product" },
+    { label: "Misc", href: "/knowledge/misc" },
   ]
 
   const connectLinks: FooterLink[] = [

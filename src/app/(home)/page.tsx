@@ -32,6 +32,7 @@ export default function Home() {
           description: page.data.description,
           externalUrl: page.data.url,
           cover,
+          coverLinkHide: page.data.coverLinkHide,
           featured: page.data.featured,
         },
       ]
@@ -53,7 +54,10 @@ export default function Home() {
       <div className="pb-30">
         <div className="flex justify-between mb-6">
           <h2 className={cn(fontLarge, "text-xl")}>Recent Writing</h2>
-          <a href="/knowledge" className="group flex items-center">
+          <a
+            href="/knowledge"
+            className="group -mr-3 flex items-center rounded-md px-3 py-1.5 transition-colors hover:bg-muted"
+          >
             <span className="text-md">View all</span>
             <ArrowRightIcon className="pl-2 size-6 transition-transform group-hover:translate-x-0.5" />
           </a>
@@ -90,7 +94,10 @@ export default function Home() {
       <div className="pb-30">
         <div className="flex justify-between mb-6">
           <h2 className={cn(fontLarge, "text-xl")}>Selected Work</h2>
-          <a href="/knowledge" className="group flex items-center">
+          <a
+            href="/knowledge"
+            className="group -mr-3 flex items-center rounded-md px-3 py-1.5 transition-colors hover:bg-muted"
+          >
             <span className="text-md">View all</span>
             <ArrowRightIcon className="pl-2 size-6 transition-transform group-hover:translate-x-0.5" />
           </a>
