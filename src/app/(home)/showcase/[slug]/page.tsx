@@ -4,6 +4,14 @@ import { ArrowLeftIcon } from "lucide-react"
 
 import { mdxComponents } from "@/mdx-components"
 import { showcaseSource } from "@/lib/showcase-source"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 
 export const revalidate = false
 export const dynamic = "force-static"
@@ -24,7 +32,7 @@ export async function generateMetadata(props: {
   if (!page) notFound()
 
   return {
-    title: page.data.title,
+    title: `${page.data.title} | Showcase | Jens Fischer`,
     description: page.data.description,
   }
 }
@@ -41,32 +49,24 @@ export default async function ShowcaseCaseStudy(props: {
   const year = doc.date.getUTCFullYear()
 
   return (
-    <main className="max-w-screen-lg mx-auto px-8 pt-8">
-      <article className="py-20 mx-auto max-w-[720px]">
-        <Link
-          href="/showcase"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeftIcon className="size-4" />
-          Showcase
-        </Link>
+    <article>
+      <header className="mt-8 flex flex-col gap-2 container mx-auto px-6 pb-20">
+        {doc.tags?.length && (
+          <p className="text-sm font-mono text-muted-foreground">
+            {doc.tags.join(" · ")}
+          </p>
+        )}
+        <h1 className="text-8xl font-semibold font-headline tracking-tight text-6xl text-foreground">
+          {doc.title}
+        </h1>
+        {doc.description && (
+          <p className="text-xl text-muted-foreground max-w-prose">
+            {doc.description}
+          </p>
+        )}
+      </header>
 
-        <header className="mt-8 flex flex-col gap-2">
-          <p className="text-sm font-mono text-muted-foreground">{year}</p>
-          <h1 className="text-4xl font-normal text-foreground">{doc.title}</h1>
-          {doc.description && (
-            <p className="text-xl text-muted-foreground max-w-prose">
-              {doc.description}
-            </p>
-          )}
-        </header>
-
-        <hr className="my-8 border-border" />
-
-        <div className="prose-doc">
-          <MDX components={mdxComponents} />
-        </div>
-      </article>
-    </main>
+      <MDX components={mdxComponents} />
+    </article>
   )
 }

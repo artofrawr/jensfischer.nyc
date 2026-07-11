@@ -1,9 +1,51 @@
 ---
-title: Karoke
+title: Karaoke
 description: A demo to showcase Web Audio API capabilities.
-tags: ["case study", "google", "motion design"]
+tags: ["web audio", "webgl", "three.js", "midi"]
 date: 2012-09-01
-url: https://demo-karaoke.artofrawr.com
 cover: cover.jpg
 featured: false
 ---
+
+import { KaraokeDemo } from "@/demos/karaoke/KaraokeDemo"
+import { WebAudioIntro } from "@/demos/karaoke/WebAudioIntro"
+
+<div className="container mx-auto px-6 pb-20">
+
+## The brief
+
+This tech demo was originally thrown together for a pitch. I was tasked by my client
+to showcase the Web Audio API capabilities of the Chrome browser, while simultanoeously
+building a fun mini-game for the singing-contest TV show "The Voice".
+
+## Web Audio API
+
+The **Web Audio API** is a browser built-in for generating, processing, and
+playing sound in real time. You wire up an audio graph — sources (oscillators,
+audio files, the microphone) routed through processing nodes (gain, filters,
+analysers, pitch shifters) and out to the speakers — and you can reshape any of
+it live while it plays. Press play and drag the slider to bend the pitch of a
+simple oscillator in real time:
+
+<WebAudioIntro />
+
+## The concept
+
+That one idea — reading and reshaping audio on the fly — is the foundation this
+demo was built on. Staying close to the concept of a singing competition, the demo
+challenges you to hit the perfect pitch by lining up the staff lines with your cursor.
+
+<div className="py-20">
+  <KaraokeDemo />
+</div>
+
+## How it works
+
+The demo runs entirely in the browser. A Standard **MIDI** File carries the vocal
+melody, which is parsed and sampled ahead of the playhead to draw the target
+lines. Two audio tracks — instrumental and vocals — play through the **Web Audio
+API**, and a real-time pitch-shift on the vocals responds to how accurately you
+track the melody: the closer you are, the cleaner it sounds and the brighter
+and more colorful the **WebGL/Three.js** visuals will be.
+
+</div>
