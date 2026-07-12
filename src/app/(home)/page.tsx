@@ -1,5 +1,4 @@
-import { ShowcaseGrid } from "@/components/showcase-grid"
-import type { ShowcaseItem } from "@/components/showcase-cover"
+import { ShowCaseCover, type ShowcaseItem } from "@/components/showcase-cover"
 import { getShowcaseCover, showcaseSource } from "@/lib/showcase-source"
 import { source } from "@/lib/source"
 import Link from "next/link"
@@ -8,7 +7,7 @@ import { ArrowRightIcon } from "lucide-react"
 
 export default function Home() {
   const fontLarge =
-    "font-semibold font-headline tracking-tight text-6xl leading-[1.2]"
+    "font-semibold font-headline tracking-tighter text-6xl leading-[1.2]"
 
   const recentDocs = [...source.getPages()]
     .filter((page) => page.path !== "index.mdx" && page.data.lastModified)
@@ -41,10 +40,7 @@ export default function Home() {
   return (
     <main className="container mx-auto px-6">
       <div className={cn("py-40 mx-auto", fontLarge)}>
-        <p>
-          Hey! I&apos;m Jens Fischer, a full stack product engineer and
-          entrepeneur based in NYC.
-        </p>
+        <p>Hey! I&apos;m Jens, a product engineer from NYC.</p>
         <p className="text-ring">
           I take pride in user experiences that are built with attention to
           detail.
@@ -95,14 +91,18 @@ export default function Home() {
         <div className="flex justify-between mb-6">
           <h2 className={cn(fontLarge, "text-xl")}>Selected Work</h2>
           <a
-            href="/knowledge"
+            href="/showcase"
             className="group -mr-3 flex items-center rounded-md px-3 py-1.5 transition-colors hover:bg-muted"
           >
             <span className="text-md">View all</span>
             <ArrowRightIcon className="pl-2 size-6 transition-transform group-hover:translate-x-0.5" />
           </a>
         </div>
-        <ShowcaseGrid items={items} />
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          {items.map((item) => (
+            <ShowCaseCover key={item.url} {...item} />
+          ))}
+        </div>
       </div>
 
       <section className="py-20 mx-auto">

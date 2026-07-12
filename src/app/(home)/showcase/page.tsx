@@ -22,9 +22,12 @@ export default function Showcase() {
   return (
     <main className="container mx-auto px-6 pt-8">
       <div className="py-20">
-        <h1 className="text-4xl font-normal pb-2">Showcase</h1>
+        <h1 className="text-4xl tracking-tighter font-headline font-normal font-semibold pb-2 ">
+          Showcase
+        </h1>
         <p className="text-xl text-muted-foreground max-w-prose pb-12">
-          A collection of projects &amp; products I&apos;ve shipped.
+          A collection of case studies and tech demos for projects and products
+          I've shipped.
         </p>
         <ShowcaseGrid items={items} />
       </div>
