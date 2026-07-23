@@ -1,6 +1,10 @@
+import { Box, Text } from "@chakra-ui/react"
+
 import { ShowcaseGrid } from "@/components/showcase-grid"
 import type { ShowcaseItem } from "@/components/showcase-cover"
+import { PageContainer } from "@/components/ui/page-container"
 import { getShowcaseCover, showcaseSource } from "@/lib/showcase-source"
+import { H1 } from "@/components/ui/styled"
 
 export default function Showcase() {
   const items: ShowcaseItem[] = [...showcaseSource.getPages()]
@@ -20,17 +24,23 @@ export default function Showcase() {
     })
 
   return (
-    <main className="container mx-auto px-6 pt-8">
-      <div className="py-20">
-        <h1 className="text-4xl tracking-tighter font-headline font-normal font-semibold pb-2 ">
+    <PageContainer as="main" px={6} pt={8}>
+      <Box py={20}>
+        <H1
+          textStyle="4xl"
+          letterSpacing="tighter"
+          fontFamily="headline"
+          fontWeight="semibold"
+          pb={2}
+        >
           Showcase
-        </h1>
-        <p className="text-xl text-muted-foreground max-w-prose pb-12">
+        </H1>
+        <Text textStyle="xl" color="muted.foreground" maxW="prose" pb={12}>
           A collection of case studies and tech demos for projects and products
-          I've shipped.
-        </p>
+          I&apos;ve shipped.
+        </Text>
         <ShowcaseGrid items={items} />
-      </div>
-    </main>
+      </Box>
+    </PageContainer>
   )
 }

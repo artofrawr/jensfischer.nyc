@@ -10,7 +10,7 @@ featured: false
 import { KaraokeDemo } from "@/demos/karaoke/KaraokeDemo"
 import { WebAudioIntro } from "@/demos/karaoke/WebAudioIntro"
 
-<div className="container mx-auto px-6 pb-20">
+<PageContainer px={6} pb={20}>
 
 ## The brief
 
@@ -35,9 +35,9 @@ That one idea — reading and reshaping audio on the fly — is the foundation t
 demo was built on. Staying close to the concept of a singing competition, the demo
 challenges you to hit the perfect pitch by lining up the staff lines with your cursor.
 
-<div className="py-20">
+<Box py={20}>
   <KaraokeDemo />
-</div>
+</Box>
 
 ## How it works
 
@@ -48,4 +48,4 @@ API**, and a real-time pitch-shift on the vocals responds to how accurately you
 track the melody: the closer you are, the cleaner it sounds and the brighter
 and more colorful the **WebGL/Three.js** visuals will be.
 
-</div>
+</PageContainer>

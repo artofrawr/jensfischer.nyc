@@ -1,4 +1,5 @@
-import Link from "next/link"
+import { Box, Flex, Grid, SimpleGrid, Text } from "@chakra-ui/react"
+import { H2, H3, Link, Main, Section } from "@/components/ui/styled"
 
 const timeline = [
   {
@@ -68,80 +69,117 @@ const principles = [
   },
 ]
 
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <H2 textStyle="2xl" fontWeight="medium" pb={2}>
+      {children}
+    </H2>
+  )
+}
+
 export default function About() {
   return (
-    <main className="max-w-screen-lg mx-auto px-8 pt-8">
-      <div className="py-20 max-w-screen-lg mx-auto">
-        <p className="text-4xl font-normal leading-relaxed">
+    <Main maxW="64rem" mx="auto" px={8} pt={8}>
+      <Box py={20} maxW="64rem" mx="auto">
+        <Text textStyle="4xl" fontWeight="normal" lineHeight="tall">
           I&apos;ve spent over two decades building digital experiences and
           products at the intersection of design, engineering and - most
           recently - AI. I&apos;ve led teams, shipped to millions of users, and
           now spend most of my time building AI-native products.
-        </p>
-      </div>
+        </Text>
+      </Box>
 
-      <section className="py-12 max-w-screen-lg mx-auto">
-        <h2 className="text-2xl font-medium pb-2">How I work</h2>
-        <p className="text-xl text-muted-foreground max-w-prose pb-10">
+      <Section py={12} maxW="64rem" mx="auto">
+        <SectionHeading>How I work</SectionHeading>
+        <Text textStyle="xl" color="muted.foreground" maxW="prose" pb={10}>
           Some guiding principles.
-        </p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        </Text>
+        <SimpleGrid columns={{ base: 1, sm: 2 }} gap={4}>
           {principles.map((p) => (
-            <div key={p.title} className="rounded-lg border border-border p-5">
-              <h3 className="text-lg font-medium text-foreground pb-2">
-                {p.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {p.body}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="py-12 max-w-screen-lg mx-auto">
-        <h2 className="text-2xl font-medium pb-2">Timeline</h2>
-        <p className="text-xl text-muted-foreground max-w-prose pb-10">
-          The shape of my career so far.
-        </p>
-        <div className="space-y-6">
-          {timeline.map((entry) => (
-            <div
-              key={`${entry.period}-${entry.org}`}
-              className="grid grid-cols-1 gap-2 sm:grid-cols-[200px_1fr] sm:gap-8 border-b border-border pb-6 last:border-b-0"
+            <Box
+              key={p.title}
+              borderRadius="lg"
+              borderWidth="1px"
+              borderColor="border"
+              p={5}
             >
-              <div className="text-sm font-mono text-muted-foreground pt-1">
-                {entry.period}
-              </div>
-              <div>
-                <div className="text-lg font-medium text-foreground">
-                  {entry.role}
-                </div>
-                <div className="text-sm text-muted-foreground pb-2">
-                  {entry.org}
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed max-w-prose">
-                  {entry.summary}
-                </p>
-              </div>
-            </div>
+              <H3 textStyle="lg" fontWeight="medium" color="foreground" pb={2}>
+                {p.title}
+              </H3>
+              <Text textStyle="sm" color="muted.foreground" lineHeight="tall">
+                {p.body}
+              </Text>
+            </Box>
           ))}
-        </div>
-      </section>
+        </SimpleGrid>
+      </Section>
 
-      <section className="py-12 max-w-screen-lg mx-auto">
-        <h2 className="text-2xl font-medium pb-2">Contact</h2>
-        <p className="text-xl text-muted-foreground max-w-prose pb-6 leading-relaxed">
+      <Section py={12} maxW="64rem" mx="auto">
+        <SectionHeading>Timeline</SectionHeading>
+        <Text textStyle="xl" color="muted.foreground" maxW="prose" pb={10}>
+          The shape of my career so far.
+        </Text>
+        <Flex direction="column" gap={6}>
+          {timeline.map((entry) => (
+            <Grid
+              key={`${entry.period}-${entry.org}`}
+              templateColumns={{ base: "1fr", sm: "200px 1fr" }}
+              gap={{ base: 2, sm: 8 }}
+              borderBottomWidth="1px"
+              borderColor="border"
+              pb={6}
+              css={{ "&:last-child": { borderBottomWidth: 0 } }}
+            >
+              <Box
+                textStyle="sm"
+                fontFamily="mono"
+                color="muted.foreground"
+                pt={1}
+              >
+                {entry.period}
+              </Box>
+              <Box>
+                <Box textStyle="lg" fontWeight="medium" color="foreground">
+                  {entry.role}
+                </Box>
+                <Box textStyle="sm" color="muted.foreground" pb={2}>
+                  {entry.org}
+                </Box>
+                <Text
+                  textStyle="sm"
+                  color="muted.foreground"
+                  lineHeight="tall"
+                  maxW="prose"
+                >
+                  {entry.summary}
+                </Text>
+              </Box>
+            </Grid>
+          ))}
+        </Flex>
+      </Section>
+
+      <Section py={12} maxW="64rem" mx="auto">
+        <SectionHeading>Contact</SectionHeading>
+        <Text
+          textStyle="xl"
+          color="muted.foreground"
+          maxW="prose"
+          pb={6}
+          lineHeight="tall"
+        >
           Reach out to connect or collaborate. You can reach me via{" "}
           <Link
             href="https://www.linkedin.com/in/jensfischer-nyc/"
-            className="underline underline-offset-4 hover:text-foreground"
+            textDecoration="underline"
+            textUnderlineOffset="4px"
+            _hover={{ color: "foreground" }}
           >
             LinkedIn
           </Link>{" "}
           or Email.
-        </p>
-      </section>
-    </main>
+        </Text>
+      </Section>
+    </Main>
   )
 }

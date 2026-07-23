@@ -1,12 +1,20 @@
-import Link from "next/link"
-import { source } from "@/lib/source"
+import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react"
+
+import { PageContainer } from "@/components/ui/page-container"
 import { showcaseSource } from "@/lib/showcase-source"
+import { A, Footer, H3, Link } from "@/components/ui/styled"
 
 type FooterLink = {
   label: string
   href: string
   external?: boolean
 }
+
+const linkStyles = {
+  color: "paper/70",
+  transition: "color 0.15s ease",
+  _hover: { color: "paper" },
+} as const
 
 function FooterColumn({
   title,
@@ -16,34 +24,36 @@ function FooterColumn({
   links: FooterLink[]
 }) {
   return (
-    <div className="flex flex-col gap-4">
-      <h3 className="text-xs uppercase tracking-widest text-background/40">
+    <Flex direction="column" gap={4}>
+      <H3
+        textStyle="xs"
+        textTransform="uppercase"
+        letterSpacing="widest"
+        color="paper/40"
+      >
         {title}
-      </h3>
-      <ul className="flex flex-col gap-3">
+      </H3>
+      <Flex as="ul" direction="column" gap={3} listStyleType="none">
         {links.map((link) => (
           <li key={link.href + link.label}>
             {link.external ? (
-              <a
+              <A
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-background/70 transition-colors hover:text-background"
+                {...linkStyles}
               >
                 {link.label}
-              </a>
+              </A>
             ) : (
-              <Link
-                href={link.href}
-                className="text-background/70 transition-colors hover:text-background"
-              >
+              <Link href={link.href} {...linkStyles}>
                 {link.label}
               </Link>
             )}
           </li>
         ))}
-      </ul>
-    </div>
+      </Flex>
+    </Flex>
   )
 }
 
@@ -70,31 +80,60 @@ function SiteFooter() {
   ]
 
   return (
-    <footer className="site-footer bg-foreground text-background dark:border-t dark:border-white/10">
-      <div className="container mx-auto px-6 py-20">
-        <div className="grid grid-cols-2 gap-12 md:grid-cols-3 lg:grid-cols-[2fr_1fr_1fr_1fr]">
-          <div className="col-span-2 max-w-xs md:col-span-3 lg:col-span-1">
-            <div className="font-headline text-lg font-semibold tracking-tight">
+    // The footer keeps a dark surface in both color modes, so it uses the fixed
+    // ink/paper tokens rather than the inverting background/foreground pair.
+    <Footer
+      bg="ink"
+      color="paper"
+      _dark={{ borderTopWidth: "1px", borderColor: "paper/10" }}
+    >
+      <PageContainer px={6} py={20}>
+        <Grid
+          templateColumns={{
+            base: "repeat(2, minmax(0, 1fr))",
+            md: "repeat(3, minmax(0, 1fr))",
+            lg: "2fr 1fr 1fr 1fr",
+          }}
+          gap={12}
+        >
+          <GridItem colSpan={{ base: 2, md: 3, lg: 1 }} maxW="xs">
+            <Box
+              fontFamily="headline"
+              textStyle="lg"
+              fontWeight="semibold"
+              letterSpacing="tight"
+            >
               Jens Fischer
-            </div>
-            <p className="mt-4 text-sm text-background/60">
+            </Box>
+            <Text mt={4} textStyle="sm" color="paper/60">
               Full stack product engineer and entrepreneur based in NYC. Over
               two decades building digital experiences and products at the
               intersection of design and engineering.
-            </p>
-          </div>
+            </Text>
+          </GridItem>
 
           <FooterColumn title="Showcase" links={showcaseLinks} />
           <FooterColumn title="Knowledge" links={knowledgeLinks} />
           <FooterColumn title="Connect" links={connectLinks} />
-        </div>
+        </Grid>
 
-        <div className="mt-16 flex flex-col gap-2 border-t border-background/15 pt-8 font-mono text-sm text-background/50 sm:flex-row sm:justify-between">
+        <Flex
+          mt={16}
+          direction={{ base: "column", sm: "row" }}
+          justify={{ sm: "space-between" }}
+          gap={2}
+          borderTopWidth="1px"
+          borderColor="paper/15"
+          pt={8}
+          fontFamily="mono"
+          textStyle="sm"
+          color="paper/50"
+        >
           <span>© 2026 Jens Fischer</span>
           <span>Built with attention to detail.</span>
-        </div>
-      </div>
-    </footer>
+        </Flex>
+      </PageContainer>
+    </Footer>
   )
 }
 

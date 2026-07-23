@@ -1,17 +1,10 @@
-import Link from "next/link"
 import { notFound } from "next/navigation"
-import { ArrowLeftIcon } from "lucide-react"
+import { Text } from "@chakra-ui/react"
 
 import { mdxComponents } from "@/mdx-components"
+import { PageContainer } from "@/components/ui/page-container"
 import { showcaseSource } from "@/lib/showcase-source"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
+import { H1 } from "@/components/ui/styled"
 
 export const revalidate = false
 export const dynamic = "force-static"
@@ -46,25 +39,39 @@ export default async function ShowcaseCaseStudy(props: {
 
   const doc = page.data
   const MDX = doc.body
-  const year = doc.date.getUTCFullYear()
 
   return (
     <article>
-      <header className="mt-8 flex flex-col gap-2 container mx-auto px-6 pb-20">
+      <PageContainer
+        as="header"
+        mt={8}
+        display="flex"
+        flexDirection="column"
+        gap={2}
+        px={6}
+        pb={20}
+      >
         {doc.tags?.length && (
-          <p className="text-sm font-mono text-muted-foreground">
+          <Text textStyle="sm" fontFamily="mono" color="muted.foreground">
             {doc.tags.join(" · ")}
-          </p>
+          </Text>
         )}
-        <h1 className="text-8xl font-semibold font-headline tracking-tight text-6xl text-foreground">
+        <H1
+          fontSize="8xl"
+          lineHeight={1}
+          fontWeight="semibold"
+          fontFamily="headline"
+          letterSpacing="tight"
+          color="foreground"
+        >
           {doc.title}
-        </h1>
+        </H1>
         {doc.description && (
-          <p className="text-xl text-muted-foreground max-w-prose">
+          <Text textStyle="xl" color="muted.foreground" maxW="prose">
             {doc.description}
-          </p>
+          </Text>
         )}
-      </header>
+      </PageContainer>
 
       <MDX components={mdxComponents} />
     </article>

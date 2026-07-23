@@ -1,51 +1,73 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
+import { chakra } from "@chakra-ui/react"
 
-import { cn } from "@/lib/utils"
-
-const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 shrink-0 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
-  {
-    variants: {
-      variant: {
-        default:
-          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
-        outline:
-          "border border-border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
-        secondary:
-          "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+const Button = chakra("button", {
+  base: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 2,
+    whiteSpace: "nowrap",
+    borderRadius: "md",
+    textStyle: "sm",
+    fontWeight: "medium",
+    transition: "all 0.15s ease",
+    outline: "none",
+    flexShrink: 0,
+    cursor: "pointer",
+    _focusVisible: {
+      borderColor: "ring",
+      boxShadow: "0 0 0 3px var(--jf-colors-ring)",
+    },
+    _disabled: { pointerEvents: "none", opacity: 0.5 },
+    "& svg": { pointerEvents: "none", flexShrink: 0, boxSize: 4 },
+  },
+  variants: {
+    variant: {
+      default: {
+        bg: "primary",
+        color: "primary.foreground",
+        boxShadow: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        _hover: { bg: "primary/90" },
       },
-      size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5",
-        lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
-        icon: "size-9",
+      destructive: {
+        bg: "destructive",
+        color: "white",
+        boxShadow: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        _hover: { bg: "destructive/90" },
+      },
+      outline: {
+        borderWidth: "1px",
+        borderColor: "border",
+        bg: "background",
+        boxShadow: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        _hover: { bg: "accent", color: "accent.foreground" },
+      },
+      secondary: {
+        bg: "secondary",
+        color: "secondary.foreground",
+        boxShadow: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        _hover: { bg: "secondary/80" },
+      },
+      ghost: {
+        _hover: { bg: "accent", color: "accent.foreground" },
+      },
+      link: {
+        color: "primary",
+        textUnderlineOffset: "4px",
+        _hover: { textDecoration: "underline" },
       },
     },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
+    size: {
+      default: { h: 9, px: 4, py: 2 },
+      sm: { h: 8, gap: 1.5, borderRadius: "md", px: 3 },
+      lg: { h: 10, borderRadius: "md", px: 6 },
+      icon: { boxSize: 9 },
     },
   },
-)
+  defaultVariants: {
+    variant: "default",
+    size: "default",
+  },
+})
 
-function Button({
-  className,
-  variant,
-  size,
-  ...props
-}: React.ComponentProps<"button"> & VariantProps<typeof buttonVariants>) {
-  return (
-    <button
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
-  )
-}
-
-export { Button, buttonVariants }
+export { Button }

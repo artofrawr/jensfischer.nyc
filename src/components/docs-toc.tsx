@@ -1,9 +1,7 @@
 "use client"
 
-import * as React from "react"
 import { useActiveAnchor, type TOCItemType } from "fumadocs-core/toc"
-
-import { cn } from "@/lib/utils"
+import { Box, Flex, Text, chakra } from "@chakra-ui/react"
 
 interface DocsTocProps {
   toc: TOCItemType[]
@@ -15,12 +13,32 @@ export function DocsToc({ toc }: DocsTocProps) {
   if (toc.length === 0) return null
 
   return (
-    <aside className="sticky top-[calc(var(--header-height)+1px)] z-30 hidden h-[calc(100svh-var(--header-height)-1px)] w-(--toc-width) shrink-0 xl:block">
-      <nav className="h-full overflow-y-auto overscroll-contain py-8 pe-4 ps-4">
-        <p className="mb-2 text-[13px] font-semibold text-foreground">
+    <chakra.aside
+      position="sticky"
+      top="calc({sizes.header} + 1px)"
+      zIndex={30}
+      display={{ base: "none", xl: "block" }}
+      h="calc(100svh - {sizes.header} - 1px)"
+      w="toc"
+      flexShrink={0}
+    >
+      <chakra.nav
+        h="full"
+        overflowY="auto"
+        overscrollBehavior="contain"
+        py={8}
+        pe={4}
+        ps={4}
+      >
+        <Text mb={2} fontSize="13px" fontWeight="semibold" color="foreground">
           On This Page
-        </p>
-        <ul className="relative flex flex-col">
+        </Text>
+        <Flex
+          as="ul"
+          position="relative"
+          direction="column"
+          listStyleType="none"
+        >
           {toc.map((item) => {
             const id = item.url.slice(1)
             const isActive = activeAnchor === id
@@ -28,28 +46,38 @@ export function DocsToc({ toc }: DocsTocProps) {
 
             return (
               <li key={item.url}>
-                <a
+                <chakra.a
                   href={item.url}
-                  className={cn(
-                    "block border-l-1 py-1 text-[12.5px] leading-relaxed transition-colors",
-                    depth === 0 ? "ps-3" : "ps-6",
-                    isActive
-                      ? "border-primary font-medium text-foreground"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
+                  display="block"
+                  borderLeftWidth="1px"
+                  py={1}
+                  fontSize="12.5px"
+                  lineHeight="tall"
+                  transition="color 0.15s ease, border-color 0.15s ease"
+                  ps={depth === 0 ? 3 : 6}
+                  {...(isActive
+                    ? {
+                        borderColor: "primary",
+                        fontWeight: "medium",
+                        color: "foreground",
+                      }
+                    : {
+                        color: "muted.foreground",
+                        _hover: { color: "foreground" },
+                      })}
                 >
                   {item.title}
-                </a>
+                </chakra.a>
               </li>
             )
           })}
-        </ul>
-        <div className="pt-4">
-          <p className="mb-2 text-[13px] font-semibold text-foreground">
+        </Flex>
+        <Box pt={4}>
+          <Text mb={2} fontSize="13px" fontWeight="semibold" color="foreground">
             Share
-          </p>
-        </div>
-      </nav>
-    </aside>
+          </Text>
+        </Box>
+      </chakra.nav>
+    </chakra.aside>
   )
 }

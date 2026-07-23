@@ -1,150 +1,201 @@
 import * as React from "react"
-import Link from "next/link"
 import Image, { type StaticImageData } from "next/image"
+import { AspectRatio, Box, Flex } from "@chakra-ui/react"
 
-import { cn } from "@/lib/utils"
 import { CodeBlock } from "@/components/code-block"
+import { PageContainer } from "@/components/ui/page-container"
+import {
+  A,
+  Blockquote,
+  Code,
+  H2,
+  H3,
+  H4,
+  Hr,
+  Img,
+  Li,
+  Link,
+  Ol,
+  P,
+  Strong,
+  Table,
+  Td,
+  Th,
+  Tr,
+  Ul,
+} from "@/components/ui/styled"
+
+const headingStyles = {
+  scrollMarginTop: 28,
+  fontWeight: "medium",
+  letterSpacing: "tight",
+} as const
 
 export const mdxComponents = {
-  h2: ({ className, ...props }: React.ComponentProps<"h2">) => (
-    <h2
-      className={cn(
-        "mt-10 scroll-m-28 text-xl font-medium tracking-tight first:mt-0",
-        className,
-      )}
+  h2: (props: React.ComponentProps<"h2">) => (
+    <H2
+      mt={10}
+      textStyle="xl"
+      {...headingStyles}
+      css={{ "&:first-child": { mt: 0 } }}
       {...props}
     />
   ),
-  h3: ({ className, ...props }: React.ComponentProps<"h3">) => (
-    <h3
-      className={cn(
-        "mt-8 scroll-m-28 text-lg font-medium tracking-tight",
-        className,
-      )}
+  h3: (props: React.ComponentProps<"h3">) => (
+    <H3 mt={8} textStyle="lg" {...headingStyles} {...props} />
+  ),
+  h4: (props: React.ComponentProps<"h4">) => (
+    <H4 mt={8} textStyle="md" {...headingStyles} {...props} />
+  ),
+  a: (props: React.ComponentProps<"a">) => (
+    <A
+      fontWeight="medium"
+      textDecoration="underline"
+      textUnderlineOffset="4px"
       {...props}
     />
   ),
-  h4: ({ className, ...props }: React.ComponentProps<"h4">) => (
-    <h4
-      className={cn(
-        "mt-8 scroll-m-28 text-base font-medium tracking-tight",
-        className,
-      )}
+  p: (props: React.ComponentProps<"p">) => (
+    <P
+      lineHeight="tall"
+      css={{ "&:not(:first-child)": { mt: 6 } }}
       {...props}
     />
   ),
-  a: ({ className, ...props }: React.ComponentProps<"a">) => (
-    <a
-      className={cn("font-medium underline underline-offset-4", className)}
+  strong: (props: React.ComponentProps<"strong">) => (
+    <Strong fontWeight="medium" {...props} />
+  ),
+  ul: (props: React.ComponentProps<"ul">) => (
+    <Ul my={6} ml={6} listStyleType="disc" {...props} />
+  ),
+  ol: (props: React.ComponentProps<"ol">) => (
+    <Ol my={6} ml={6} listStyleType="decimal" {...props} />
+  ),
+  li: (props: React.ComponentProps<"li">) => <Li mt={2} {...props} />,
+  blockquote: (props: React.ComponentProps<"blockquote">) => (
+    <Blockquote
+      mt={6}
+      borderLeftWidth="2px"
+      pl={6}
+      fontStyle="italic"
       {...props}
     />
   ),
-  p: ({ className, ...props }: React.ComponentProps<"p">) => (
-    <p
-      className={cn("leading-relaxed [&:not(:first-child)]:mt-6", className)}
-      {...props}
-    />
+  hr: (props: React.ComponentProps<"hr">) => (
+    <Hr my={{ base: 4, md: 8 }} {...props} />
   ),
-  strong: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
-    <strong className={cn("font-medium", className)} {...props} />
-  ),
-  ul: ({ className, ...props }: React.ComponentProps<"ul">) => (
-    <ul className={cn("my-6 ml-6 list-disc", className)} {...props} />
-  ),
-  ol: ({ className, ...props }: React.ComponentProps<"ol">) => (
-    <ol className={cn("my-6 ml-6 list-decimal", className)} {...props} />
-  ),
-  li: ({ className, ...props }: React.ComponentProps<"li">) => (
-    <li className={cn("mt-2", className)} {...props} />
-  ),
-  blockquote: ({ className, ...props }: React.ComponentProps<"blockquote">) => (
-    <blockquote
-      className={cn("mt-6 border-l-2 pl-6 italic", className)}
-      {...props}
-    />
-  ),
-  hr: ({ ...props }: React.ComponentProps<"hr">) => (
-    <hr className="my-4 md:my-8" {...props} />
-  ),
-  table: ({ className, ...props }: React.ComponentProps<"table">) => (
-    <div className="my-6 w-full overflow-y-auto rounded-xl border">
-      <table
-        className={cn(
-          "relative w-full overflow-hidden border-none text-sm",
-          className,
-        )}
+  table: (props: React.ComponentProps<"table">) => (
+    <Box
+      my={6}
+      w="full"
+      overflowY="auto"
+      borderRadius="xl"
+      borderWidth="1px"
+      borderColor="border"
+    >
+      <Table
+        position="relative"
+        w="full"
+        overflow="hidden"
+        border="none"
+        textStyle="sm"
         {...props}
       />
-    </div>
+    </Box>
   ),
-  tr: ({ className, ...props }: React.ComponentProps<"tr">) => (
-    <tr className={cn("m-0 border-b", className)} {...props} />
+  tr: (props: React.ComponentProps<"tr">) => (
+    <Tr m={0} borderBottomWidth="1px" {...props} />
   ),
-  th: ({ className, ...props }: React.ComponentProps<"th">) => (
-    <th
-      className={cn(
-        "px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right",
-        className,
-      )}
+  th: (props: React.ComponentProps<"th">) => (
+    <Th
+      px={4}
+      py={2}
+      textAlign="left"
+      fontWeight="bold"
+      css={{
+        "&[align=center]": { textAlign: "center" },
+        "&[align=right]": { textAlign: "right" },
+      }}
       {...props}
     />
   ),
-  td: ({ className, ...props }: React.ComponentProps<"td">) => (
-    <td
-      className={cn(
-        "px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right",
-        className,
-      )}
+  td: (props: React.ComponentProps<"td">) => (
+    <Td
+      px={4}
+      py={2}
+      textAlign="left"
+      css={{
+        "&[align=center]": { textAlign: "center" },
+        "&[align=right]": { textAlign: "right" },
+      }}
       {...props}
     />
   ),
-  code: ({ className, ...props }: React.ComponentProps<"code">) => {
+  code: (props: React.ComponentProps<"code">) => {
     if (typeof props.children === "string" && !("data-language" in props)) {
       return (
-        <code
-          className={cn(
-            "relative rounded-md bg-muted px-[0.3rem] py-[0.2rem] font-mono text-[0.8rem] break-words",
-            className,
-          )}
+        <Code
+          position="relative"
+          borderRadius="md"
+          bg="muted"
+          px="0.3rem"
+          py="0.2rem"
+          fontFamily="mono"
+          fontSize="0.8rem"
+          wordBreak="break-word"
           {...props}
         />
       )
     }
-    return <code className={className} {...props} />
+    return <code {...props} />
   },
   pre: (props: React.ComponentProps<"pre">) => <CodeBlock {...props} />,
   img: ({
     src,
     alt,
-    className,
     ...props
   }: Omit<React.ComponentProps<"img">, "src"> & {
     src?: string | StaticImageData
   }) => {
+    const styles = {
+      my: 8,
+      h: "auto",
+      w: "full",
+      borderRadius: "lg",
+    } as const
+
     if (src && typeof src === "object") {
+      // next/image's `fill` prop collides with the CSS `fill` style prop, so
+      // the optimized image is wrapped rather than styled directly.
       return (
-        <Image
-          src={src}
-          alt={alt ?? ""}
-          className={cn("my-8 h-auto w-full rounded-lg", className)}
-          {...(props as Omit<React.ComponentProps<typeof Image>, "src" | "alt">)}
-        />
+        <Box {...styles} asChild>
+          <Image
+            src={src}
+            alt={alt ?? ""}
+            {...(props as Omit<
+              React.ComponentProps<typeof Image>,
+              "src" | "alt"
+            >)}
+          />
+        </Box>
       )
     }
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={src}
-        alt={alt ?? ""}
-        className={cn("my-8 h-auto w-full rounded-lg", className)}
-        {...props}
-      />
+      <Img src={src} alt={alt ?? ""} {...styles} {...props} />
     )
   },
-  Link: ({ className, ...props }: React.ComponentProps<typeof Link>) => (
+  Link: (props: React.ComponentProps<typeof Link>) => (
     <Link
-      className={cn("font-medium underline underline-offset-4", className)}
+      fontWeight="medium"
+      textDecoration="underline"
+      textUnderlineOffset="4px"
       {...props}
     />
   ),
+  // Layout primitives available to MDX content.
+  Box,
+  Flex,
+  AspectRatio,
+  PageContainer,
 }

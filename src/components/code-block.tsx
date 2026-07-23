@@ -2,19 +2,13 @@
 
 import { Check, Copy } from "lucide-react"
 import { useRef, useState } from "react"
-
-import { cn } from "@/lib/utils"
+import { chakra } from "@chakra-ui/react"
 
 interface CodeBlockProps extends React.ComponentProps<"pre"> {
   title?: string
 }
 
-export function CodeBlock({
-  className,
-  children,
-  title,
-  ...props
-}: CodeBlockProps) {
+export function CodeBlock({ children, title, ...props }: CodeBlockProps) {
   const ref = useRef<HTMLPreElement>(null)
   const [copied, setCopied] = useState(false)
 
@@ -26,37 +20,77 @@ export function CodeBlock({
   }
 
   return (
-    <figure className="not-prose group relative my-6 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-[#0a0a0a]">
+    <chakra.figure
+      className="group"
+      position="relative"
+      my={6}
+      overflow="hidden"
+      borderRadius="lg"
+      borderWidth="1px"
+      borderColor="zinc.200"
+      bg="zinc.50"
+      _dark={{ borderColor: "zinc.800", bg: "#0a0a0a" }}
+    >
       {title && (
-        <figcaption className="border-b border-zinc-200 bg-zinc-100/60 px-4 py-2 font-mono text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900/40 dark:text-zinc-400">
+        <chakra.figcaption
+          borderBottomWidth="1px"
+          borderColor="zinc.200"
+          bg="zinc.100/60"
+          px={4}
+          py={2}
+          fontFamily="mono"
+          textStyle="xs"
+          color="zinc.600"
+          _dark={{
+            borderColor: "zinc.800",
+            bg: "zinc.900/40",
+            color: "zinc.400",
+          }}
+        >
           {title}
-        </figcaption>
+        </chakra.figcaption>
       )}
-      <button
+      <chakra.button
         type="button"
         onClick={onCopy}
         aria-label={copied ? "Copied" : "Copy code"}
-        className={cn(
-          "absolute right-3 z-10 inline-flex h-7 w-7 items-center justify-center rounded-md text-zinc-500 transition-colors hover:bg-zinc-200/60 hover:text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:text-zinc-400 dark:hover:bg-zinc-800/60 dark:hover:text-zinc-50",
-          title ? "top-[calc(2.25rem+0.5rem)]" : "top-3",
-        )}
+        position="absolute"
+        right={3}
+        top={title ? "calc(2.25rem + 0.5rem)" : 3}
+        zIndex={10}
+        display="inline-flex"
+        boxSize={7}
+        alignItems="center"
+        justifyContent="center"
+        borderRadius="md"
+        color="zinc.500"
+        cursor="pointer"
+        transition="background-color 0.15s ease, color 0.15s ease"
+        _hover={{ bg: "zinc.200/60", color: "zinc.900" }}
+        _focusVisible={{
+          outline: "none",
+          boxShadow: "0 0 0 2px var(--jf-colors-zinc-400)",
+        }}
+        _dark={{
+          color: "zinc.400",
+          _hover: { bg: "zinc.800/60", color: "zinc.50" },
+        }}
       >
-        {copied ? (
-          <Check className="h-3.5 w-3.5" />
-        ) : (
-          <Copy className="h-3.5 w-3.5" />
-        )}
-      </button>
-      <pre
+        {copied ? <Check size={14} /> : <Copy size={14} />}
+      </chakra.button>
+      <chakra.pre
         ref={ref}
-        className={cn(
-          "overflow-x-auto px-4 py-4 font-mono text-[15px] leading-relaxed [&_code]:font-mono",
-          className,
-        )}
+        overflowX="auto"
+        px={4}
+        py={4}
+        fontFamily="mono"
+        fontSize="15px"
+        lineHeight="tall"
+        css={{ "& code": { fontFamily: "mono" } }}
         {...props}
       >
         {children}
-      </pre>
-    </figure>
+      </chakra.pre>
+    </chakra.figure>
   )
 }

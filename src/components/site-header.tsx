@@ -2,100 +2,120 @@
 
 import * as React from "react"
 import { createPortal } from "react-dom"
-import Link from "next/link"
+import NextLink from "next/link"
 import { usePathname } from "next/navigation"
 import { MenuIcon, XIcon } from "lucide-react"
+import {
+  Box,
+  Flex,
+  chakra,
+  type BoxProps,
+  type FlexProps,
+  type HTMLChakraProps,
+} from "@chakra-ui/react"
 
-import { cn } from "@/lib/utils"
+import { PageContainer } from "@/components/ui/page-container"
 
-function SiteHeader({ className, children }: React.ComponentProps<"header">) {
+const Link = chakra(NextLink)
+
+function SiteHeader({ children, ...props }: BoxProps) {
   return (
-    <header
+    <chakra.header
       data-slot="site-header"
-      className={cn(
-        "sticky top-0 z-50 w-full border-b bg-background/70 backdrop-blur-md supports-[backdrop-filter]:bg-background/80",
-        className,
-      )}
+      position="sticky"
+      top={0}
+      zIndex={50}
+      w="full"
+      borderBottomWidth="1px"
+      bg="background/70"
+      backdropFilter="blur(12px)"
+      css={{
+        "@supports (backdrop-filter: blur(0px))": { bg: "background/80" },
+      }}
+      {...props}
     >
-      <div className="container mx-auto px-6">
-        <div className="flex h-(--header-height) items-center gap-4">
+      <PageContainer px={6}>
+        <Flex h="header" align="center" gap={4}>
           {children}
-        </div>
-      </div>
-    </header>
+        </Flex>
+      </PageContainer>
+    </chakra.header>
   )
 }
 
 function SiteHeaderLogo({
   href = "/",
-  className,
   children,
-}: React.PropsWithChildren<{ href?: string; className?: string }>) {
+  ...props
+}: React.ComponentProps<typeof Link>) {
   return (
     <Link
       href={href}
-      className={cn(
-        "flex shrink-0 items-center gap-2 font-semibold tracking-tight text-foreground hover:opacity-80 transition-opacity",
-        className,
-      )}
+      display="flex"
+      flexShrink={0}
+      alignItems="center"
+      gap={2}
+      fontWeight="semibold"
+      letterSpacing="tight"
+      color="foreground"
+      transition="opacity 0.15s ease"
+      _hover={{ opacity: 0.8 }}
+      {...props}
     >
       {children}
     </Link>
   )
 }
 
-function SiteHeaderNav({ className, children }: React.ComponentProps<"nav">) {
+function SiteHeaderNav({ children, ...props }: BoxProps) {
   return (
-    <nav
+    <chakra.nav
       data-slot="site-header-nav"
-      className={cn("ml-auto hidden items-center gap-1 md:flex", className)}
+      ml="auto"
+      display={{ base: "none", md: "flex" }}
+      alignItems="center"
+      gap={1}
+      {...props}
     >
       {children}
-    </nav>
+    </chakra.nav>
   )
 }
 
 function SiteHeaderNavLink({
   href,
   exact = false,
-  className,
   children,
-}: {
-  href: string
-  exact?: boolean
-  className?: string
-  children: React.ReactNode
-}) {
+  ...props
+}: React.ComponentProps<typeof Link> & { href: string; exact?: boolean }) {
   const pathname = usePathname()
   const isActive = exact ? pathname === href : pathname.startsWith(href)
 
   return (
     <Link
       href={href}
-      className={cn(
-        "inline-flex items-center rounded-md px-3 py-1.5 text-sm font-medium transition-all hover:bg-muted",
-        isActive
-          ? "text-foreground"
-          : "text-muted-foreground hover:text-foreground",
-        className,
-      )}
+      display="inline-flex"
+      alignItems="center"
+      borderRadius="md"
+      px={3}
+      py={1.5}
+      textStyle="sm"
+      fontWeight="medium"
+      transition="all 0.15s ease"
+      color={isActive ? "foreground" : "muted.foreground"}
+      _hover={{ bg: "muted", color: "foreground" }}
+      {...props}
     >
       {children}
     </Link>
   )
 }
 
-function SiteHeaderActions({
-  className,
-  children,
-}: React.ComponentProps<"div">) {
+function SiteHeaderActions({ children, ...props }: FlexProps) {
   return (
-    <div
-      data-slot="site-header-actions"
-      className={cn("flex items-center gap-1", className)}
-    >
+    <Flex data-slot="site-header-actions" align="center" gap={1} {...props}>
       {children}
-    </div>
+    </Flex>
   )
 }
 
@@ -104,9 +124,9 @@ export const MobileNavContext = React.createContext<{ close: () => void }>({
 })
 
 function SiteHeaderMobileNav({
-  className,
   children,
-}: React.PropsWithChildren<{ className?: string }>) {
+  ...props
+}: React.PropsWithChildren<HTMLChakraProps<"button">>) {
   const [open, setOpen] = React.useState(false)
 
   // Prevent body scroll when menu is open
@@ -123,38 +143,65 @@ function SiteHeaderMobileNav({
 
   return (
     <>
-      <button
+      <chakra.button
         onClick={() => setOpen(true)}
-        className={cn(
-          "inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground md:hidden",
-          className,
-        )}
+        display={{ base: "inline-flex", md: "none" }}
+        alignItems="center"
+        justifyContent="center"
+        borderRadius="md"
+        p={1.5}
+        color="muted.foreground"
+        cursor="pointer"
+        _hover={{ bg: "muted", color: "foreground" }}
         aria-label="Open menu"
+        {...props}
       >
-        <MenuIcon className="size-5" />
-      </button>
+        <MenuIcon size={20} />
+      </chakra.button>
       {open &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex flex-col bg-background animate-in fade-in duration-150">
-            <div className="container mx-auto px-6">
-              <div className="flex h-(--header-height) items-center justify-between">
-                <span className="text-sm font-semibold text-foreground">
+          <Box
+            position="fixed"
+            inset={0}
+            zIndex={50}
+            display="flex"
+            flexDirection="column"
+            bg="background"
+            animationName="fade-in"
+            animationDuration="150ms"
+          >
+            <PageContainer px={6}>
+              <Flex h="header" align="center" justify="space-between">
+                <chakra.span
+                  textStyle="sm"
+                  fontWeight="semibold"
+                  color="foreground"
+                >
                   Menu
-                </span>
-                <button
+                </chakra.span>
+                <chakra.button
                   onClick={() => setOpen(false)}
-                  className="inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+                  display="inline-flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  borderRadius="md"
+                  p={1.5}
+                  color="muted.foreground"
+                  cursor="pointer"
+                  _hover={{ bg: "muted", color: "foreground" }}
                   aria-label="Close menu"
                 >
-                  <XIcon className="size-5" />
-                </button>
-              </div>
-            </div>
-            <div className="border-t" />
+                  <XIcon size={20} />
+                </chakra.button>
+              </Flex>
+            </PageContainer>
+            <Box borderTopWidth="1px" />
             <MobileNavContext.Provider value={{ close: () => setOpen(false) }}>
-              <div className="container mx-auto px-6 pt-6">{children}</div>
+              <PageContainer px={6} pt={6}>
+                {children}
+              </PageContainer>
             </MobileNavContext.Provider>
-          </div>,
+          </Box>,
           document.body,
         )}
     </>
@@ -164,14 +211,9 @@ function SiteHeaderMobileNav({
 function SiteHeaderMobileNavLink({
   href,
   exact = false,
-  className,
   children,
-}: {
-  href: string
-  exact?: boolean
-  className?: string
-  children: React.ReactNode
-}) {
+  ...props
+}: React.ComponentProps<typeof Link> & { href: string; exact?: boolean }) {
   const pathname = usePathname()
   const { close } = React.use(MobileNavContext)
   const isActive = exact ? pathname === href : pathname.startsWith(href)
@@ -180,13 +222,15 @@ function SiteHeaderMobileNavLink({
     <Link
       href={href}
       onClick={close}
-      className={cn(
-        "flex items-center py-2 text-2xl font-medium transition-colors",
-        isActive
-          ? "text-foreground"
-          : "text-muted-foreground hover:text-foreground",
-        className,
-      )}
+      display="flex"
+      alignItems="center"
+      py={2}
+      textStyle="2xl"
+      fontWeight="medium"
+      transition="color 0.15s ease"
+      color={isActive ? "foreground" : "muted.foreground"}
+      _hover={{ color: "foreground" }}
+      {...props}
     >
       {children}
     </Link>

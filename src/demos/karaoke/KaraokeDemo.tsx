@@ -2,9 +2,9 @@
 
 import * as React from "react"
 import { Maximize2, Minimize2 } from "lucide-react"
+import { Box, Flex, Text, chakra } from "@chakra-ui/react"
 
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
 import type { KaraokeEngine } from "./engine"
 
 type Phase = "loading" | "ready" | "playing" | "done"
@@ -114,54 +114,87 @@ export function KaraokeDemo({ className }: { className?: string }) {
   const overlayVisible = phase !== "playing"
 
   return (
-    <div
+    <Box
       ref={containerRef}
-      className={cn(
-        "select-none overflow-hidden bg-black",
-        immersive ? "fixed inset-0 z-[100]" : "relative aspect-video w-full",
-        className,
-      )}
+      className={className}
+      userSelect="none"
+      overflow="hidden"
+      bg="black"
+      {...(immersive
+        ? { position: "fixed", inset: 0, zIndex: 100 }
+        : { position: "relative", aspectRatio: "wide", w: "full" })}
     >
-      <div
+      <Box
         ref={mountRef}
-        className={cn(
-          "absolute inset-0 touch-none",
-          phase === "playing" && "cursor-none",
-        )}
+        position="absolute"
+        inset={0}
+        touchAction="none"
+        cursor={phase === "playing" ? "none" : undefined}
       />
 
       {/* Fullscreen toggle */}
-      <button
+      <chakra.button
         type="button"
         onClick={toggleFullscreen}
         aria-label={immersive ? "Exit fullscreen" : "Enter fullscreen"}
-        className="absolute right-3 top-3 z-10 bg-black/40 p-2 text-white/90 backdrop-blur-sm transition-colors hover:bg-black/70 hover:text-white"
+        position="absolute"
+        right={3}
+        top={3}
+        zIndex={10}
+        bg="black/40"
+        p={2}
+        color="white/90"
+        cursor="pointer"
+        backdropFilter="blur(4px)"
+        transition="background-color 0.15s ease, color 0.15s ease"
+        _hover={{ bg: "black/70", color: "white" }}
       >
-        {immersive ? (
-          <Minimize2 className="size-4" />
-        ) : (
-          <Maximize2 className="size-4" />
-        )}
-      </button>
+        {immersive ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+      </chakra.button>
 
       {/* Loader / start overlay */}
       {overlayVisible && (
-        <div className="absolute inset-0 z-[5] flex flex-col items-center justify-center gap-5 bg-black/55 px-6 text-center ">
-          <div className="flex flex-col gap-1.5">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#ffc7bb]">
+        <Flex
+          position="absolute"
+          inset={0}
+          zIndex={5}
+          direction="column"
+          align="center"
+          justify="center"
+          gap={5}
+          bg="black/55"
+          px={6}
+          textAlign="center"
+        >
+          <Flex direction="column" gap={1.5}>
+            <Text
+              fontFamily="mono"
+              textStyle="xs"
+              textTransform="uppercase"
+              letterSpacing="0.2em"
+              color="#ffc7bb"
+            >
               Web Audio API + WebGL
-            </p>
-            <h3 className="text-2xl font-medium text-white">Karaoke</h3>
-            <p className="max-w-xs text-sm text-white/70">
+            </Text>
+            <chakra.h3 textStyle="2xl" fontWeight="medium" color="white">
+              Karaoke
+            </chakra.h3>
+            <Text maxW="xs" textStyle="sm" color="white/70">
               Move your cursor up and down to match the staff lines and hit the
               right pitch. Sound on, please.
-            </p>
-          </div>
+            </Text>
+          </Flex>
 
           {phase === "loading" ? (
-            <p className="animate-pulse font-mono text-sm tracking-widest text-white/80">
+            <Text
+              animation="pulse"
+              fontFamily="mono"
+              textStyle="sm"
+              letterSpacing="widest"
+              color="white/80"
+            >
               LOADING…
-            </p>
+            </Text>
           ) : (
             <Button
               type="button"
@@ -172,8 +205,8 @@ export function KaraokeDemo({ className }: { className?: string }) {
               {phase === "done" ? "PLAY AGAIN" : "START"}
             </Button>
           )}
-        </div>
+        </Flex>
       )}
-    </div>
+    </Box>
   )
 }

@@ -2,8 +2,7 @@
 
 import * as React from "react"
 import { Play, Square } from "lucide-react"
-
-import { cn } from "@/lib/utils"
+import { Box, Flex, chakra } from "@chakra-ui/react"
 
 const NOTE_NAMES = [
   "C",
@@ -95,7 +94,8 @@ export function WebAudioIntro({ className }: { className?: string }) {
     const ctx = ctxRef.current
     const osc = oscRef.current
     // Glide to the new pitch while playing, rather than jumping.
-    if (ctx && osc) osc.detune.setTargetAtTime(value * 100, ctx.currentTime, 0.015)
+    if (ctx && osc)
+      osc.detune.setTargetAtTime(value * 100, ctx.currentTime, 0.015)
   }
 
   React.useEffect(() => {
@@ -112,35 +112,63 @@ export function WebAudioIntro({ className }: { className?: string }) {
   const { freq, note } = describe(semitones)
 
   return (
-    <figure
-      className={cn(
-        "my-8 flex flex-col gap-4 rounded-xl border border-border bg-card p-5 sm:flex-row sm:items-center",
-        className,
-      )}
+    <chakra.figure
+      className={className}
+      my={8}
+      display="flex"
+      flexDirection={{ base: "column", sm: "row" }}
+      alignItems={{ sm: "center" }}
+      gap={4}
+      borderRadius="xl"
+      borderWidth="1px"
+      borderColor="border"
+      bg="card"
+      p={5}
     >
-      <button
+      <chakra.button
         type="button"
         onClick={toggle}
         aria-label={playing ? "Stop tone" : "Play tone"}
         aria-pressed={playing}
-        className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105 active:scale-95"
+        display="flex"
+        boxSize={12}
+        flexShrink={0}
+        alignItems="center"
+        justifyContent="center"
+        borderRadius="full"
+        bg="primary"
+        color="primary.foreground"
+        cursor="pointer"
+        transition="transform 0.15s ease"
+        _hover={{ transform: "scale(1.05)" }}
+        _active={{ transform: "scale(0.95)" }}
       >
         {playing ? (
-          <Square className="size-4 fill-current" />
+          <Square size={16} fill="currentColor" />
         ) : (
-          <Play className="size-5 translate-x-0.5 fill-current" />
+          <Play
+            size={20}
+            fill="currentColor"
+            style={{ transform: "translateX(0.125rem)" }}
+          />
         )}
-      </button>
+      </chakra.button>
 
-      <div className="flex flex-1 flex-col gap-2">
-        <div className="flex items-baseline justify-between font-mono text-xs text-muted-foreground">
+      <Flex flex="1" direction="column" gap={2}>
+        <Flex
+          align="baseline"
+          justify="space-between"
+          fontFamily="mono"
+          textStyle="xs"
+          color="muted.foreground"
+        >
           <span>Pitch</span>
-          <span className="tabular-nums">
+          <Box as="span" fontVariantNumeric="tabular-nums">
             {semitones > 0 ? "+" : ""}
             {semitones} st · {note} · {Math.round(freq)} Hz
-          </span>
-        </div>
-        <input
+          </Box>
+        </Flex>
+        <chakra.input
           type="range"
           min={-12}
           max={12}
@@ -148,9 +176,10 @@ export function WebAudioIntro({ className }: { className?: string }) {
           value={semitones}
           onChange={(e) => onSlider(Number(e.target.value))}
           aria-label="Pitch in semitones"
-          className="w-full accent-primary"
+          w="full"
+          accentColor="primary"
         />
-      </div>
-    </figure>
+      </Flex>
+    </chakra.figure>
   )
 }

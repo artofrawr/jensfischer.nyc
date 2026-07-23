@@ -1,11 +1,12 @@
-import Link from "next/link"
 import { notFound } from "next/navigation"
+import { Box, Flex, Text } from "@chakra-ui/react"
 
 import { source } from "@/lib/source"
 import { mdxComponents } from "@/mdx-components"
 import { DocsContent } from "@/components/docs-content"
 import { DocsSidebar } from "@/components/docs-sidebar"
 import { KnowledgeBreadcrumb } from "@/components/knowledge-breadcrumb"
+import { H1, Hr, Link, Span } from "@/components/ui/styled"
 
 type PageTree = typeof source.pageTree
 type PageTreeNode = PageTree["children"][number]
@@ -91,42 +92,60 @@ export default async function CategoryPage(props: {
       <DocsContent toc={[]} hideToc>
         <KnowledgeBreadcrumb items={[{ name: title }]} />
 
-        <div className="flex flex-col gap-2">
-          <h1 className="text-[28px] font-bold text-foreground">{title}</h1>
+        <Flex direction="column" gap={2}>
+          <H1 fontSize="28px" fontWeight="bold" color="foreground">
+            {title}
+          </H1>
           {description && (
-            <p className="text-base leading-relaxed text-muted-foreground">
+            <Text textStyle="md" lineHeight="tall" color="muted.foreground">
               {description}
-            </p>
+            </Text>
           )}
-        </div>
+        </Flex>
 
         {Intro && (
-          <div className="prose-doc mt-6">
+          <Box className="prose-doc" mt={6}>
             <Intro components={mdxComponents} />
-          </div>
+          </Box>
         )}
 
-        <hr className="my-6 border-border" />
+        <Hr my={6} borderColor="border" />
 
-        <ul className="flex flex-col divide-y divide-border">
+        <Flex
+          as="ul"
+          direction="column"
+          listStyleType="none"
+          css={{
+            "& > li + li": { borderTopWidth: "1px", borderColor: "border" },
+          }}
+        >
           {articles.map((article) => (
             <li key={article.url}>
               <Link
                 href={article.url}
-                className="group flex flex-col gap-1 py-4 transition-colors"
+                className="group"
+                display="flex"
+                flexDirection="column"
+                gap={1}
+                py={4}
               >
-                <span className="font-medium text-foreground group-hover:text-primary">
+                <Span
+                  fontWeight="medium"
+                  color="foreground"
+                  transition="color 0.15s ease"
+                  _groupHover={{ color: "primary" }}
+                >
                   {article.data.title}
-                </span>
+                </Span>
                 {article.data.description && (
-                  <span className="text-sm text-muted-foreground">
+                  <Span textStyle="sm" color="muted.foreground">
                     {article.data.description}
-                  </span>
+                  </Span>
                 )}
               </Link>
             </li>
           ))}
-        </ul>
+        </Flex>
       </DocsContent>
     </>
   )

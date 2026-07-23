@@ -1,21 +1,24 @@
+import { Box } from "@chakra-ui/react"
+
+import { PageContainer } from "@/components/ui/page-container"
+
 export default function KnowledgeLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <div
-      className="border-b border-dashed"
-      style={
-        {
-          "--sidebar-width": "272px",
-          "--toc-width": "272px",
-        } as React.CSSProperties
-      }
-    >
-      <div className="container mx-auto border-x border-dashed bg-background flex w-full flex-1">
+    <Box borderStyle="dashed" borderBottomWidth="1px" borderColor="border">
+      <PageContainer
+        borderStyle="dashed"
+        borderInlineWidth="1px"
+        borderColor="border"
+        bg="background"
+        display="flex"
+        flex="1"
+      >
         {children}
-      </div>
-    </div>
+      </PageContainer>
+    </Box>
   )
 }

@@ -1,7 +1,6 @@
-import { ArrowRightIcon } from "lucide-react"
-import Image from "next/image"
 import type { StaticImageData } from "next/image"
-import Link from "next/link"
+import { Box, Flex } from "@chakra-ui/react"
+import { A, ArrowRight, H2, Link, NextImg } from "@/components/ui/styled"
 
 export type ShowcaseItem = {
   url: string
@@ -13,7 +12,11 @@ export type ShowcaseItem = {
   coverLinkHide?: boolean
 }
 
-const cardClassName = "group relative block"
+const cardStyles = {
+  className: "group",
+  position: "relative",
+  display: "block",
+} as const
 
 export function ShowCaseThumb({
   url,
@@ -26,40 +29,73 @@ export function ShowCaseThumb({
 
   const inner = (
     <>
-      <div className="block relative aspect-square overflow-hidden">
-        <Image
+      {/* Property order matches ShowCaseCover's card styles so both resolve to
+          the same generated class. */}
+      <Box
+        position="relative"
+        display="block"
+        aspectRatio="square"
+        overflow="hidden"
+      >
+        <NextImg
           src={cover}
           alt={title}
           sizes="(min-width: 1024px) 100vw, (min-width: 640px) 100vw"
           placeholder="blur"
-          className="block size-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+          display="block"
+          boxSize="full"
+          objectFit="cover"
+          transition="transform 0.5s ease-out"
+          _groupHover={{ transform: "scale(1.1)" }}
         />
-      </div>
-      <div className="pointer-events-none relative inset-0 flex flex-col justify-start pt-4 pb-10">
-        <h2 className="flex items-center gap-2 font-headline font-semibold text-foreground text-2xl">
+      </Box>
+      <Flex
+        pointerEvents="none"
+        position="relative"
+        inset={0}
+        direction="column"
+        justify="flex-start"
+        pt={4}
+        pb={10}
+      >
+        <H2
+          display="flex"
+          alignItems="center"
+          gap={2}
+          fontFamily="headline"
+          fontWeight="semibold"
+          color="foreground"
+          textStyle="2xl"
+        >
           <span>{title}</span>
-          <ArrowRightIcon className="size-5 opacity-0 -translate-x-1 transition-all duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100" />
-        </h2>
+          <ArrowRight
+            boxSize={5}
+            opacity={0}
+            transform="translateX(-0.25rem)"
+            transition="all 0.3s ease-out"
+            _groupHover={{ transform: "translateX(0)", opacity: 1 }}
+          />
+        </H2>
         <p>{description}</p>
-      </div>
+      </Flex>
     </>
   )
 
   if (isExternal && externalUrl) {
     return (
-      <a
+      <A
         href={externalUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className={cardClassName}
+        {...cardStyles}
       >
         {inner}
-      </a>
+      </A>
     )
   }
 
   return (
-    <Link href={url} className={cardClassName}>
+    <Link href={url} {...cardStyles}>
       {inner}
     </Link>
   )

@@ -3,6 +3,10 @@
 import * as React from "react"
 import { useTheme } from "next-themes"
 import { MoonIcon, SunIcon } from "lucide-react"
+import { chakra } from "@chakra-ui/react"
+
+const Sun = chakra(SunIcon)
+const Moon = chakra(MoonIcon)
 
 export function ThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme()
@@ -19,20 +23,53 @@ export function ThemeToggle() {
   }
 
   return (
-    <button
+    <chakra.button
       role="switch"
       aria-checked={isDark}
       aria-label="Toggle dark mode"
       onClick={toggle}
-      className="relative inline-flex h-5.5 w-10 shrink-0 cursor-pointer items-center rounded-full border border-border bg-muted transition-colors"
+      position="relative"
+      display="inline-flex"
+      h="1.375rem"
+      w={10}
+      flexShrink={0}
+      cursor="pointer"
+      alignItems="center"
+      borderRadius="full"
+      borderWidth="1px"
+      borderColor="border"
+      bg="muted"
+      transition="background-color 0.15s ease"
     >
-      <span
-        className="pointer-events-none absolute left-0.5 flex size-4 items-center justify-center rounded-full bg-background text-foreground shadow-sm transition-transform duration-150 ease-in-out data-[state=checked]:translate-x-[18px]"
-        data-state={checked ? "checked" : "unchecked"}
+      <chakra.span
+        pointerEvents="none"
+        position="absolute"
+        left={0.5}
+        display="flex"
+        boxSize={4}
+        alignItems="center"
+        justifyContent="center"
+        borderRadius="full"
+        bg="background"
+        color="foreground"
+        boxShadow="0 1px 2px 0 rgb(0 0 0 / 0.05)"
+        transition="transform 0.15s ease-in-out"
+        transform={checked ? "translateX(18px)" : "translateX(0)"}
       >
-        <SunIcon className="size-2.5 scale-100 rotate-0 transition-transform dark:scale-0 dark:-rotate-90" />
-        <MoonIcon className="absolute size-2.5 scale-0 rotate-90 transition-transform dark:scale-100 dark:rotate-0" />
-      </span>
-    </button>
+        <Sun
+          boxSize={2.5}
+          transition="transform 0.15s ease"
+          transform="scale(1) rotate(0deg)"
+          _dark={{ transform: "scale(0) rotate(-90deg)" }}
+        />
+        <Moon
+          position="absolute"
+          boxSize={2.5}
+          transition="transform 0.15s ease"
+          transform="scale(0) rotate(90deg)"
+          _dark={{ transform: "scale(1) rotate(0deg)" }}
+        />
+      </chakra.span>
+    </chakra.button>
   )
 }

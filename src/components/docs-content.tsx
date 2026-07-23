@@ -1,7 +1,8 @@
 "use client"
 
 import { AnchorProvider, type TOCItemType } from "fumadocs-core/toc"
-import { cn } from "@/lib/utils"
+import { Box, Flex } from "@chakra-ui/react"
+
 import { DocsToc } from "@/components/docs-toc"
 
 interface DocsContentProps {
@@ -13,17 +14,18 @@ interface DocsContentProps {
 export function DocsContent({ toc, hideToc, children }: DocsContentProps) {
   return (
     <AnchorProvider toc={toc}>
-      <div className="flex min-w-0 flex-1 items-stretch">
-        <div
-          className={cn(
-            "min-w-0 flex-1 py-8 ps-6 lg:ps-10",
-            hideToc ? "pe-6" : "pe-6 lg:pe-10",
-          )}
+      <Flex minW={0} flex="1" align="stretch">
+        <Box
+          minW={0}
+          flex="1"
+          py={8}
+          ps={{ base: 6, lg: 10 }}
+          pe={hideToc ? 6 : { base: 6, lg: 10 }}
         >
-          <div className={cn(!hideToc && "max-w-[688px]")}>{children}</div>
-        </div>
+          <Box maxW={hideToc ? undefined : "688px"}>{children}</Box>
+        </Box>
         {!hideToc && <DocsToc toc={toc} />}
-      </div>
+      </Flex>
     </AnchorProvider>
   )
 }

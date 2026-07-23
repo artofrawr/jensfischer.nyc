@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation"
+import { Box, Flex, Text } from "@chakra-ui/react"
 
 import { source } from "@/lib/source"
 import { mdxComponents } from "@/mdx-components"
 import { DocsContent } from "@/components/docs-content"
 import { DocsSidebar } from "@/components/docs-sidebar"
+import { H1, Hr } from "@/components/ui/styled"
 
 export const revalidate = false
 export const dynamic = "force-static"
@@ -29,20 +31,22 @@ export default function KnowledgeIndexPage() {
     <>
       <DocsSidebar tree={source.pageTree} />
       <DocsContent toc={doc.toc} hideToc>
-        <div className="flex flex-col gap-2">
-          <h1 className="text-[28px] font-bold text-foreground">{doc.title}</h1>
+        <Flex direction="column" gap={2}>
+          <H1 fontSize="28px" fontWeight="bold" color="foreground">
+            {doc.title}
+          </H1>
           {doc.description && (
-            <p className="text-base leading-relaxed text-muted-foreground">
+            <Text textStyle="md" lineHeight="tall" color="muted.foreground">
               {doc.description}
-            </p>
+            </Text>
           )}
-        </div>
+        </Flex>
 
-        <hr className="my-6 border-border" />
+        <Hr my={6} borderColor="border" />
 
-        <div className="prose-doc">
+        <Box className="prose-doc">
           <MDX components={mdxComponents} />
-        </div>
+        </Box>
       </DocsContent>
     </>
   )

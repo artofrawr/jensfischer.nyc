@@ -1,12 +1,15 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
+import NextLink from "next/link"
 import { usePathname } from "next/navigation"
 import { ChevronRightIcon } from "lucide-react"
+import { Box, Flex, chakra, type BoxProps } from "@chakra-ui/react"
 
-import { cn } from "@/lib/utils"
 import type { source } from "@/lib/source"
+
+const Link = chakra(NextLink)
+const Chevron = chakra(ChevronRightIcon)
 
 type PageTree = typeof source.pageTree
 type PageTreeNode = PageTree["children"][number]
@@ -25,21 +28,30 @@ function folderContainsPath(folder: FolderNode, pathname: string): boolean {
   return false
 }
 
-export function DocsSidebar({
-  tree,
-  className,
-  ...props
-}: React.ComponentProps<"aside"> & { tree: PageTree }) {
+export function DocsSidebar({ tree, ...props }: BoxProps & { tree: PageTree }) {
   return (
-    <aside
-      className={cn(
-        "sticky top-[calc(var(--header-height)+1px)] z-30 hidden h-[calc(100svh-var(--header-height)-1px)] w-(--sidebar-width) shrink-0 border-r border-border lg:block",
-        className,
-      )}
+    <chakra.aside
+      position="sticky"
+      top="calc({sizes.header} + 1px)"
+      zIndex={30}
+      display={{ base: "none", lg: "block" }}
+      h="calc(100svh - {sizes.header} - 1px)"
+      w="sidebar"
+      flexShrink={0}
+      borderRightWidth="1px"
+      borderColor="border"
       {...props}
     >
-      <nav className="h-full overflow-y-auto overscroll-contain py-6 pe-6 ps-6 text-sm">
-        <div className="flex flex-col gap-0.5">
+      <chakra.nav
+        h="full"
+        overflowY="auto"
+        overscrollBehavior="contain"
+        py={6}
+        pe={6}
+        ps={6}
+        textStyle="sm"
+      >
+        <Flex direction="column" gap={0.5}>
           {tree.children
             .filter(
               (node) =>
@@ -49,29 +61,36 @@ export function DocsSidebar({
                 ),
             )
             .map((node) => (
-            <TreeNode
-              key={
-                node.type === "page"
-                  ? (node as PageNode).url
-                  : node.type === "separator"
-                    ? `sep-${node.name}`
-                    : (node as FolderNode).$id
-              }
-              node={node}
-            />
-          ))}
-        </div>
-      </nav>
-    </aside>
+              <TreeNode
+                key={
+                  node.type === "page"
+                    ? (node as PageNode).url
+                    : node.type === "separator"
+                      ? `sep-${node.name}`
+                      : (node as FolderNode).$id
+                }
+                node={node}
+              />
+            ))}
+        </Flex>
+      </chakra.nav>
+    </chakra.aside>
   )
 }
 
 function TreeNode({ node }: { node: PageTreeNode }) {
   if (node.type === "separator") {
     return (
-      <div className="mt-6 mb-1 text-[13px] font-semibold text-foreground first:mt-0">
+      <Box
+        mt={6}
+        mb={1}
+        fontSize="13px"
+        fontWeight="semibold"
+        color="foreground"
+        css={{ "&:first-child": { mt: 0 } }}
+      >
         {node.name}
-      </div>
+      </Box>
     )
   }
 
@@ -93,12 +112,19 @@ function PageLink({ page }: { page: PageNode }) {
   return (
     <Link
       href={page.url}
-      className={cn(
-        "block rounded-md px-2 py-1.5 text-[13px] leading-normal transition-colors",
-        isActive
-          ? "bg-primary/10 font-medium text-primary"
-          : "text-muted-foreground hover:bg-accent hover:text-foreground",
-      )}
+      display="block"
+      borderRadius="md"
+      px={2}
+      py={1.5}
+      fontSize="13px"
+      lineHeight={1.5}
+      transition="background-color 0.15s ease, color 0.15s ease"
+      {...(isActive
+        ? { bg: "primary/10", fontWeight: "medium", color: "primary" }
+        : {
+            color: "muted.foreground",
+            _hover: { bg: "accent", color: "foreground" },
+          })}
     >
       {page.name as string}
     </Link>
@@ -117,32 +143,49 @@ function Folder({ folder, nested }: { folder: FolderNode; nested?: boolean }) {
   }, [containsActive]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="flex flex-col">
-      <button
+    <Flex direction="column">
+      <chakra.button
         onClick={() => setOpen((prev) => !prev)}
-        className={cn(
-          "flex w-full items-center justify-between rounded-md px-2 py-1.5 text-[13px] leading-normal transition-colors",
-          !nested && "mt-5 first:mt-0",
-          "text-muted-foreground hover:bg-accent hover:text-foreground",
-        )}
+        display="flex"
+        w="full"
+        alignItems="center"
+        justifyContent="space-between"
+        borderRadius="md"
+        px={2}
+        py={1.5}
+        fontSize="13px"
+        lineHeight={1.5}
+        textAlign="start"
+        cursor="pointer"
+        transition="background-color 0.15s ease, color 0.15s ease"
+        color="muted.foreground"
+        _hover={{ bg: "accent", color: "foreground" }}
+        {...(!nested ? { mt: 5, css: { "&:first-child": { mt: 0 } } } : {})}
       >
         {folder.name as string}
-        <ChevronRightIcon
-          className={cn(
-            "size-3.5 shrink-0 text-muted-foreground/60 transition-transform duration-200",
-            open && "rotate-90",
-          )}
+        <Chevron
+          boxSize={3.5}
+          flexShrink={0}
+          color="muted.foreground/60"
+          transition="transform 0.2s"
+          transform={open ? "rotate(90deg)" : undefined}
         />
-      </button>
+      </chakra.button>
 
-      <div
-        className={cn(
-          "grid transition-[grid-template-rows] duration-200 ease-in-out",
-          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
-        )}
+      <Box
+        display="grid"
+        transition="grid-template-rows 0.2s ease-in-out"
+        gridTemplateRows={open ? "1fr" : "0fr"}
       >
-        <div className="overflow-hidden">
-          <div className="mt-1 ms-2 flex flex-col border-l border-border ps-2">
+        <Box overflow="hidden">
+          <Flex
+            mt={1}
+            ms={2}
+            direction="column"
+            borderLeftWidth="1px"
+            borderColor="border"
+            ps={2}
+          >
             {folder.children.map((child) => {
               if (child.type === "page") {
                 return <PageLink key={child.url} page={child as PageNode} />
@@ -158,9 +201,9 @@ function Folder({ folder, nested }: { folder: FolderNode; nested?: boolean }) {
               }
               return null
             })}
-          </div>
-        </div>
-      </div>
-    </div>
+          </Flex>
+        </Box>
+      </Box>
+    </Flex>
   )
 }
